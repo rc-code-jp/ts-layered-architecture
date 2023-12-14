@@ -1,0 +1,21 @@
+{
+  "name": "ts-clean-architecture",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": "20.10.0",
+    "pnpm": "8.12.1",
+    "yarn": "NG",
+    "npm": "NG"
+  },
+  "volta": {
+    "node": "20.10.0",
+    "pnpm": "8.12.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.4.1"
+  },
+  "scripts": {
+    "@api": "pnpm -F @ts-clean-architecture/api"
+  }
+}
