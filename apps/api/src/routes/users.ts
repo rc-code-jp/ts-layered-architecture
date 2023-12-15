@@ -1,15 +1,33 @@
-import db from '@/lib/database'
-import { createResponse } from '@/utils'
-import { Hono } from 'hono'
+import { db } from '@/lib/database';
+import { createNotFountResponse, jsonResponse } from '@/utils';
+import { Hono } from 'hono';
 
+const app = new Hono();
 
-const app = new Hono()
+app.get('/', async () => {
+  const users = await db.user.findMany();
+  return jsonResponse(
+    JSON.stringify({
+      list: users,
+    }),
+  );
+});
 
-app.get('/', async (c) => {
-  const user = await db.user.findMany()
-  console.log(user)
-  return createResponse(c, { message: user })
-})
+app.get('/:id', async (c) => {
+  const { id } = c.req.param();
+  const user = await db.user.findFirst({
+    where: {
+      id: Number(id),
+    },
+  });
 
+  if (!user) return createNotFountResponse();
 
-export const usersRoute = app
+  return jsonResponse(
+    JSON.stringify({
+      item: user,
+    }),
+  );
+});
+
+export const usersRoute = app;

@@ -1,18 +1,18 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { usersRoute } from '@/routes/users';
+import { createResponse } from '@/utils';
+import { serve } from '@hono/node-server';
+import { Hono } from 'hono';
 
-import { usersRoute } from '@/routes/users'
-import { createResponse } from '@/utils'
-
-const api = new Hono().basePath('/api')
+const api = new Hono().basePath('/api');
 
 /**
  * ユーザー関連のルート
  */
-api.route('/users', usersRoute)
+api.route('/users', usersRoute);
 
-api.get('/', (c) => createResponse(c, {}))
+api.get('/hc', (_c) => createResponse(''));
 
-serve(api)
+serve(api);
 
-console.log('Server running http://localhost:3000/api')
+// biome-ignore lint/suspicious/noConsoleLog: <explanation>
+console.log('Server running http://localhost:3000/api');
