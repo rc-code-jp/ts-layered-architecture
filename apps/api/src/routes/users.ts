@@ -1,10 +1,14 @@
+import db from '@/lib/database'
 import { createResponse } from '@/utils'
 import { Hono } from 'hono'
 
+
 const app = new Hono()
 
-app.get('/', (c) => {
-  return createResponse(c, { message: 'Hello World!' })
+app.get('/', async (c) => {
+  const user = await db.user.findMany()
+  console.log(user)
+  return createResponse(c, { message: user })
 })
 
 

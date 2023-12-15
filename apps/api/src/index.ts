@@ -1,7 +1,8 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 
-import { usersRoute } from './routes/users'
+import { usersRoute } from '@/routes/users'
+import { createResponse } from '@/utils'
 
 const api = new Hono().basePath('/api')
 
@@ -10,7 +11,7 @@ const api = new Hono().basePath('/api')
  */
 api.route('/users', usersRoute)
 
-api.get('/', (c) => c.text('Hello Hono!'))
+api.get('/', (c) => createResponse(c, {}))
 
 serve(api)
 
