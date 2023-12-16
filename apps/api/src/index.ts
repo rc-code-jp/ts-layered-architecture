@@ -1,30 +1,30 @@
-import { usersRoute } from "@/routes/users";
-import { jsonResponse } from "@/utils";
-import { serve } from "@hono/node-server";
-import { Hono } from "hono";
-import { HTTPException } from "hono/http-exception";
+import { usersRoute } from '@/routes/users';
+import { jsonResponse } from '@/utils';
+import { serve } from '@hono/node-server';
+import { Hono } from 'hono';
+import { HTTPException } from 'hono/http-exception';
 
-const api = new Hono().basePath("/api");
+const api = new Hono().basePath('/api');
 
 /**
  * ユーザー関連のルート
  */
-api.route("/users", usersRoute);
+api.route('/users', usersRoute);
 
 /**
  * ヘルスチェック
  */
-api.get("/hc", (_c) => jsonResponse(""));
+api.get('/hc', (_c) => jsonResponse(''));
 
 /**
  * エラーハンドリング
  */
 api.onError((err, c) => {
-	if (err instanceof HTTPException) {
-		return err.getResponse();
-	}
-	console.error(err);
-	return c.text("internal server error", 500);
+  if (err instanceof HTTPException) {
+    return err.getResponse();
+  }
+  console.error(err);
+  return c.text('internal server error', 500);
 });
 
 /**
@@ -32,4 +32,5 @@ api.onError((err, c) => {
  */
 serve(api);
 
-console.log("Server running http://localhost:3000/api");
+// biome-ignore lint/suspicious/noConsoleLog: <explanation>
+console.log('Server running http://localhost:3000/api');

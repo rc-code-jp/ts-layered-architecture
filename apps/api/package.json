@@ -1,22 +1,25 @@
 {
-	"name": "@ts-clean-architecture/api",
-	"private": true,
-	"scripts": {
-		"dev": "tsx watch src/index.ts",
-		"prisma": "prisma"
-	},
-	"volta": {
-		"extends": "../../package.json"
-	},
-	"dependencies": {
-		"@hono/node-server": "^1.3.3",
-		"@hono/zod-validator": "^0.1.11",
-		"@prisma/client": "5.7.0",
-		"hono": "^3.11.7",
-		"zod": "^3.22.4"
-	},
-	"devDependencies": {
-		"prisma": "^5.7.0",
-		"tsx": "^3.12.2"
-	}
+  "name": "@ts-clean-architecture/api",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "prisma": "prisma",
+    "format": "biome format --write ./src",
+    "lint": "biome lint ./src --apply"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.3.3",
+    "@hono/zod-validator": "^0.1.11",
+    "@prisma/client": "5.7.0",
+    "hono": "^3.11.7",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.4.1",
+    "prisma": "^5.7.0",
+    "tsx": "^3.12.2"
+  }
 }
