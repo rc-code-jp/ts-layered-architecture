@@ -1,5 +1,5 @@
 {
-  "name": "ts-clean-architecture",
+  "name": "ts-onion-architecture",
   "private": true,
   "version": "1.0.0",
   "engines": {
@@ -18,7 +18,7 @@
     "typescript": "^5.3.3"
   },
   "scripts": {
-    "@api": "pnpm -F @ts-clean-architecture/api",
+    "@api": "pnpm -F @ts-onion-architecture/api",
     "dev": "turbo dev",
     "build": "turbo build",
     "format": "turbo format",

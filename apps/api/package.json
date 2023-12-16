@@ -1,5 +1,5 @@
 {
-  "name": "@ts-clean-architecture/api",
+  "name": "@ts-onion-architecture/api",
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts",

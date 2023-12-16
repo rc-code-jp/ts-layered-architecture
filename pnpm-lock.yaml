@@ -36,6 +36,9 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
+      '@biomejs/biome':
+        specifier: ^1.4.1
+        version: 1.4.1
       prisma:
         specifier: ^5.7.0
         version: 5.7.0
