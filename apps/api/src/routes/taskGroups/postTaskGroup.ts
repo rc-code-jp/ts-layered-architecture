@@ -15,7 +15,6 @@ const validation = factory.createMiddleware(
     'json',
     z.object({
       name: z.string().max(50),
-      email: z.string().email(),
     }),
     (result) => {
       if (!result.success) return invalidResponse(result.error.issues);
@@ -28,19 +27,20 @@ const validation = factory.createMiddleware(
  */
 const handlers = factory.createHandlers(logger(), validation, async (c) => {
   const body = c.req.valid('json');
-  const user = await db.user.create({
+  const item = await db.taskGroup.create({
     data: {
-      email: body.email,
+      name: body.name,
+      userId: 1,
     },
   });
 
-  if (!user) return notFountResponse();
+  if (!item) return notFountResponse();
 
   return jsonResponse(
     JSON.stringify({
-      item: user,
+      item: item,
     }),
   );
 });
 
-export const postUserHandlers = handlers;
+export const postTaskGroupHandlers = handlers;

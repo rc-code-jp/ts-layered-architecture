@@ -1,4 +1,4 @@
-import { usersRoute } from '@/routes/users';
+import { taskGroupsRoute } from '@/routes/taskGroups';
 import { jsonResponse } from '@/utils';
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
@@ -7,14 +7,14 @@ import { HTTPException } from 'hono/http-exception';
 const api = new Hono().basePath('/api');
 
 /**
- * ユーザー関連のルート
- */
-api.route('/users', usersRoute);
-
-/**
  * ヘルスチェック
  */
 api.get('/hc', (_c) => jsonResponse(''));
+
+/**
+ * ユーザー関連のルート
+ */
+api.route('/task-groups', taskGroupsRoute);
 
 /**
  * エラーハンドリング

@@ -7,15 +7,15 @@ import { logger } from 'hono/logger';
 const factory = createFactory();
 
 /**
- * ユーザー一覧取得
+ * タスクグループ一覧取得
  */
 const handlers = factory.createHandlers(logger(), async () => {
-  const users = await db.user.findMany();
+  const list = await db.taskGroup.findMany();
   return jsonResponse(
     JSON.stringify({
-      list: users,
+      list: list,
     }),
   );
 });
 
-export const getUsersHandlers = handlers;
+export const getTaskGroupsHandlers = handlers;

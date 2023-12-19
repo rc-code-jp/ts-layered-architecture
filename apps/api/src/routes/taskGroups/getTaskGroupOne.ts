@@ -7,24 +7,27 @@ import { logger } from 'hono/logger';
 const factory = createFactory();
 
 /**
- * ユーザー詳細取得
+ * タスクグループ詳細取得
  */
 const handlers = factory.createHandlers(logger(), async (c) => {
   const { id } = c.req.param();
-  console.dir(c.req.param());
-  const user = await db.user.findFirst({
+
+  const item = await db.taskGroup.findFirst({
     where: {
       id: { equals: Number(id) },
     },
+    include: {
+      tasks: true,
+    },
   });
 
-  if (!user) return notFountResponse();
+  if (!item) return notFountResponse();
 
   return jsonResponse(
     JSON.stringify({
-      item: user,
+      item: item,
     }),
   );
 });
 
-export const getUserOneHandlers = handlers;
+export const getTaskGroupOneHandlers = handlers;
