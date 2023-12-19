@@ -21,9 +21,9 @@ CREATE TABLE "TaskGroup" (
 CREATE TABLE "Task" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "dueDate" TEXT NOT NULL,
-    "dueTime" TEXT NOT NULL,
+    "description" TEXT,
+    "dueDate" TEXT,
+    "dueTime" TEXT,
     "done" BOOLEAN NOT NULL DEFAULT false,
     "taskGroupId" INTEGER NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

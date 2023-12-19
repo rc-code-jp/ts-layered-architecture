@@ -3,9 +3,10 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "prisma": "prisma",
     "format": "biome format --write ./src",
-    "lint": "biome lint ./src --apply"
+    "lint": "biome lint ./src --apply",
+    "prisma": "prisma",
+    "prisma:seed": "ts-node prisma/seed.ts"
   },
   "volta": {
     "extends": "../../package.json"
@@ -19,7 +20,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.4.1",
+    "@types/node": "^20.10.5",
     "prisma": "^5.7.0",
-    "tsx": "^3.12.2"
+    "ts-node": "^10.9.2",
+    "tsx": "^3.12.2",
+    "typescript": "^5.3.3"
   }
 }
