@@ -23,14 +23,14 @@ const validation = factory.createMiddleware(
 );
 
 /**
- * タスクグループ作成
+ * タスクの完了状態を変更
  */
 const handlers = factory.createHandlers(logger(), validation, async (c) => {
   const body = c.req.valid('json');
   const item = await db.taskGroup.create({
     data: {
-      userId: 1,
       name: body.name,
+      userId: 1,
     },
   });
 
@@ -43,4 +43,4 @@ const handlers = factory.createHandlers(logger(), validation, async (c) => {
   );
 });
 
-export const postTaskGroupHandlers = handlers;
+export const patchTaskDoneHandlers = handlers;

@@ -14,7 +14,10 @@ const validation = factory.createMiddleware(
   zValidator(
     'json',
     z.object({
-      name: z.string().max(50),
+      name: z.string().max(200),
+      dueDate: z.string().max(10), // YYYY-MM-DD
+      dueTime: z.string().max(8), // HH:MM:SS
+      description: z.string().max(250),
     }),
     (result) => {
       if (!result.success) return invalidResponse(result.error.issues);
@@ -23,14 +26,17 @@ const validation = factory.createMiddleware(
 );
 
 /**
- * タスクグループ作成
+ * タスク作成
  */
 const handlers = factory.createHandlers(logger(), validation, async (c) => {
   const body = c.req.valid('json');
-  const item = await db.taskGroup.create({
+  const item = await db.task.create({
     data: {
-      userId: 1,
-      name: body.name,
+      taskGroupId: 1,
+      title: body.name,
+      description: body.description,
+      dueDate: body.dueDate,
+      dueTime: body.dueTime,
     },
   });
 
@@ -43,4 +49,4 @@ const handlers = factory.createHandlers(logger(), validation, async (c) => {
   );
 });
 
-export const postTaskGroupHandlers = handlers;
+export const postTaskHandlers = handlers;
