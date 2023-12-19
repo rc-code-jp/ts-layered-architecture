@@ -1,4 +1,5 @@
 import { taskGroupsRoute } from '@/routes/taskGroups';
+import { tasksRoute } from '@/routes/tasks';
 import { jsonResponse } from '@/utils';
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
@@ -12,9 +13,14 @@ const api = new Hono().basePath('/api');
 api.get('/hc', (_c) => jsonResponse(''));
 
 /**
- * ユーザー関連のルート
+ * タスクグループ関連のルート
  */
 api.route('/task-groups', taskGroupsRoute);
+
+/**
+ * タスク関連のルート
+ */
+api.route('/tasks', tasksRoute);
 
 /**
  * エラーハンドリング

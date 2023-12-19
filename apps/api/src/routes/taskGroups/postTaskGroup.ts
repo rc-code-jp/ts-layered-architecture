@@ -1,6 +1,6 @@
 import { db } from '@/lib/database';
 import { z } from '@/lib/zod';
-import { invalidResponse, jsonResponse, notFountResponse } from '@/utils';
+import { invalidResponse, jsonResponse } from '@/utils';
 import { zValidator } from '@hono/zod-validator';
 import { createFactory } from 'hono/factory';
 import { logger } from 'hono/logger';
@@ -34,8 +34,6 @@ const handlers = factory.createHandlers(logger(), validation, async (c) => {
     },
   });
 
-  if (!item) return notFountResponse();
-
   return jsonResponse(
     JSON.stringify({
       item: item,
@@ -43,4 +41,4 @@ const handlers = factory.createHandlers(logger(), validation, async (c) => {
   );
 });
 
-export const postTaskGroupHandlers = handlers;
+export const postTaskGroup = handlers;

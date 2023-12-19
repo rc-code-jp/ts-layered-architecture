@@ -14,11 +14,7 @@ const validation = factory.createMiddleware(
   zValidator(
     'json',
     z.object({
-      taskGroupId: z.number(),
-      title: z.string().max(200),
-      dueDate: z.string().max(10).nullish(), // YYYY-MM-DD
-      dueTime: z.string().max(8).nullish(), // HH:MM:SS
-      description: z.string().max(250).nullish(),
+      name: z.string().max(50),
     }),
     (result) => {
       if (!result.success) return invalidResponse(result.error.issues);
@@ -27,31 +23,25 @@ const validation = factory.createMiddleware(
 );
 
 /**
- * タスク作成
+ * タスクグループ更新
  */
 const handlers = factory.createHandlers(logger(), validation, async (c) => {
+  const { taskGroupId } = c.req.param();
   const body = c.req.valid('json');
 
-  const taskGroup = await db.taskGroup.findFirst({
-    where: {
-      id: { equals: body.taskGroupId },
-      userId: 1,
-    },
-  });
+  const item = await db.taskGroup
+    .update({
+      where: {
+        id: Number(taskGroupId),
+        userId: 1,
+      },
+      data: {
+        name: body.name,
+      },
+    })
+    .catch(() => null);
 
-  if (!taskGroup) {
-    return notFoundResponse();
-  }
-
-  const item = await db.task.create({
-    data: {
-      taskGroupId: body.taskGroupId,
-      title: body.title,
-      description: body.description,
-      dueDate: body.dueDate,
-      dueTime: body.dueTime,
-    },
-  });
+  if (!item) return notFoundResponse();
 
   return jsonResponse(
     JSON.stringify({
@@ -60,4 +50,4 @@ const handlers = factory.createHandlers(logger(), validation, async (c) => {
   );
 });
 
-export const postTaskHandlers = handlers;
+export const patchTaskGroup = handlers;

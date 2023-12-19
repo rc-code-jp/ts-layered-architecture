@@ -1,11 +1,11 @@
 import { Hono } from 'hono';
-import { patchTaskDoneHandlers } from './patchTaskDone';
+import { patchTaskDone } from './patchTaskDone';
 import { postTaskHandlers } from './postTask';
 
 const app = new Hono();
 
 app.post('/', ...postTaskHandlers);
 
-app.post('/', ...patchTaskDoneHandlers);
+app.patch('/:taskId/done', ...patchTaskDone);
 
-export const taskGroupsRoute = app;
+export const tasksRoute = app;

@@ -19,7 +19,7 @@ export const jsonResponse = (result: BodyInit, status = 200) => {
  * @param message string
  * @returns Response
  */
-export const notFountResponse = (message = 'Not Found') => {
+export const notFoundResponse = (message = 'Not Found') => {
   return new Response(JSON.stringify([message]), {
     status: 404,
     headers: {

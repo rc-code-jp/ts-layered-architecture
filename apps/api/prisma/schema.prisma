@@ -36,8 +36,8 @@ model Task {
   id           Int        @id @default(autoincrement())
   title        String
   description  String?
-  dueDate      String?     // DateTime   @db.Date
-  dueTime      String?     // DateTime   @db.Time
+  dueDate      String?    // DateTime   @db.Date
+  dueTime      String?    // DateTime   @db.Time
   done         Boolean    @default(false)
   taskGroup    TaskGroup  @relation(fields: [taskGroupId], references: [id])
   taskGroupId  Int
