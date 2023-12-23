@@ -4,7 +4,6 @@ import { invalidResponse, jsonResponse } from '@/utils';
 import { zValidator } from '@hono/zod-validator';
 import { createFactory } from 'hono/factory';
 
-
 const factory = createFactory();
 
 /**
@@ -31,6 +30,10 @@ const handlers = factory.createHandlers(validation, async (c) => {
     data: {
       userId: 1,
       name: body.name,
+    },
+    select: {
+      id: true,
+      name: true,
     },
   });
 

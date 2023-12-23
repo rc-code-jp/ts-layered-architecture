@@ -3,7 +3,6 @@ import { jsonResponse, notFoundResponse } from '@/utils';
 
 import { createFactory } from 'hono/factory';
 
-
 const factory = createFactory();
 
 /**
@@ -16,8 +15,20 @@ const handlers = factory.createHandlers(async (c) => {
     where: {
       id: { equals: Number(taskGroupId) },
     },
-    include: {
-      tasks: true,
+    select: {
+      id: true,
+      name: true,
+      tasks: {
+        select: {
+          id: true,
+          taskGroupId: true,
+          title: true,
+          description: true,
+          dueDate: true,
+          dueTime: true,
+          done: true,
+        },
+      },
     },
   });
 
