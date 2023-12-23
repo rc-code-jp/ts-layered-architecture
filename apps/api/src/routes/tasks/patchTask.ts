@@ -16,9 +16,15 @@ const validation = factory.createMiddleware(
     'json',
     z.object({
       title: z.string().max(200),
-      dueDate: z.string().max(10), // YYYY-MM-DD
-      dueTime: z.string().max(8), // HH:MM:SS
-      description: z.string().max(250),
+      dueDate: z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/)
+        .nullish(), // YYYY-MM-DD
+      dueTime: z
+        .string()
+        .regex(/^\d{2}:\d{2}:\d{2}$/)
+        .nullish(), // HH:MM:SS
+      description: z.string().max(250).nullish(),
     }),
     (result) => {
       if (!result.success) return invalidResponse(result.error.issues);

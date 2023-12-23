@@ -16,8 +16,14 @@ const validation = factory.createMiddleware(
     z.object({
       taskGroupId: z.number(),
       title: z.string().max(200),
-      dueDate: z.string().max(10).nullish(), // YYYY-MM-DD
-      dueTime: z.string().max(8).nullish(), // HH:MM:SS
+      dueDate: z
+        .string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/)
+        .nullish(), // YYYY-MM-DD
+      dueTime: z
+        .string()
+        .regex(/^\d{2}:\d{2}:\d{2}$/)
+        .nullish(), // HH:MM:SS
       description: z.string().max(250).nullish(),
     }),
     (result) => {
