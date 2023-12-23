@@ -3,9 +3,14 @@ import { z } from '@/lib/zod';
 import { invalidResponse, jsonResponse, notFoundResponse } from '@/utils';
 import { zValidator } from '@hono/zod-validator';
 import { createFactory } from 'hono/factory';
-import { logger } from 'hono/logger';
 
 const factory = createFactory();
+
+// YYYY-MM-DD
+const dateRegex = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+
+// HH:MM:SS
+const timeRegex = /^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;
 
 /**
  * バリデーションミドルウェア
@@ -16,14 +21,8 @@ const validation = factory.createMiddleware(
     z.object({
       taskGroupId: z.number(),
       title: z.string().max(200),
-      dueDate: z
-        .string()
-        .regex(/^\d{4}-\d{2}-\d{2}$/)
-        .nullish(), // YYYY-MM-DD
-      dueTime: z
-        .string()
-        .regex(/^\d{2}:\d{2}:\d{2}$/)
-        .nullish(), // HH:MM:SS
+      dueDate: z.string().regex(dateRegex).nullish(),
+      dueTime: z.string().regex(timeRegex).nullish(),
       description: z.string().max(250).nullish(),
     }),
     (result) => {
@@ -35,7 +34,7 @@ const validation = factory.createMiddleware(
 /**
  * タスク作成
  */
-const handlers = factory.createHandlers(logger(), validation, async (c) => {
+const handlers = factory.createHandlers(validation, async (c) => {
   const body = c.req.valid('json');
 
   const taskGroup = await db.taskGroup.findFirst({

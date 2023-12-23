@@ -4,7 +4,7 @@ import { z } from '@/lib/zod';
 import { invalidResponse, jsonResponse, notFoundResponse } from '@/utils';
 import { zValidator } from '@hono/zod-validator';
 import { createFactory } from 'hono/factory';
-import { logger } from 'hono/logger';
+
 
 const factory = createFactory();
 
@@ -26,7 +26,7 @@ const validation = factory.createMiddleware(
 /**
  * タスクの完了状態を変更
  */
-const handlers = factory.createHandlers(logger(), validation, async (c) => {
+const handlers = factory.createHandlers(validation, async (c) => {
   const { taskId } = c.req.param();
   const body = c.req.valid('json');
 

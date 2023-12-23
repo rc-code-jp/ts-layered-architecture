@@ -4,8 +4,12 @@ import { jsonResponse } from '@/utils';
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
+import { logger } from 'hono/logger';
 
 const api = new Hono().basePath('/api');
+
+// ログ
+api.use('*', logger());
 
 /**
  * ヘルスチェック

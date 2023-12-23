@@ -1,14 +1,14 @@
 import { db } from '@/lib/database';
 import { jsonResponse } from '@/utils';
 import { createFactory } from 'hono/factory';
-import { logger } from 'hono/logger';
+
 
 const factory = createFactory();
 
 /**
  * 完了したタスクを削除する
  */
-const handlers = factory.createHandlers(logger(), async (c) => {
+const handlers = factory.createHandlers(async (c) => {
   const { taskGroupId } = c.req.queries();
 
   const taskGroup = await db.task.deleteMany({
