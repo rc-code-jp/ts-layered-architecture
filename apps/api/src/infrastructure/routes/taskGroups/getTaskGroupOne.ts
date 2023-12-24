@@ -41,4 +41,4 @@ const handlers = factory.createHandlers(async (c) => {
   );
 });
 
-export const getTaskGroupOneHandlers = handlers;
+export const getTaskGroupOne = handlers;

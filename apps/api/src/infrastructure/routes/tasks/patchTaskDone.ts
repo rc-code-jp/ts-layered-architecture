@@ -5,22 +5,19 @@ import { invalidResponse, jsonResponse, notFoundResponse } from '@/utils';
 import { zValidator } from '@hono/zod-validator';
 import { createFactory } from 'hono/factory';
 
-
 const factory = createFactory();
+
+const validationParams = {
+  done: z.boolean(),
+};
 
 /**
  * バリデーションミドルウェア
  */
 const validation = factory.createMiddleware(
-  zValidator(
-    'json',
-    z.object({
-      done: z.boolean(),
-    }),
-    (result) => {
-      if (!result.success) return invalidResponse(result.error.issues);
-    },
-  ),
+  zValidator('json', z.object(validationParams), (result) => {
+    if (!result.success) return invalidResponse(result.error.issues);
+  }),
 );
 
 /**
@@ -29,13 +26,14 @@ const validation = factory.createMiddleware(
 const handlers = factory.createHandlers(validation, async (c) => {
   const { taskId } = c.req.param();
   const body = c.req.valid('json');
+  const userId = c.get('userId');
 
   const item = await db.task
     .update({
       where: {
         id: Number(taskId),
         taskGroup: {
-          userId: 1,
+          userId: userId,
         },
       },
       data: {
@@ -48,7 +46,7 @@ const handlers = factory.createHandlers(validation, async (c) => {
 
   return jsonResponse(
     JSON.stringify({
-      item: item,
+      id: item.id,
     }),
   );
 });

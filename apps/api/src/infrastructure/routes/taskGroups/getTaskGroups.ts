@@ -22,4 +22,4 @@ const handlers = factory.createHandlers(async () => {
   );
 });
 
-export const getTaskGroupsHandlers = handlers;
+export const getTaskGroups = handlers;

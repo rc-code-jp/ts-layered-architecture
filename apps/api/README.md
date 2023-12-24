@@ -1,1 +1,6 @@
-# API
+# REST API
+
+- TypeScript
+- Hono
+- Zod
+- Prisma

@@ -6,19 +6,17 @@ import { createFactory } from 'hono/factory';
 
 const factory = createFactory();
 
+const validationParams = {
+  name: z.string().max(50),
+};
+
 /**
  * バリデーションミドルウェア
  */
 const validation = factory.createMiddleware(
-  zValidator(
-    'json',
-    z.object({
-      name: z.string().max(50),
-    }),
-    (result) => {
-      if (!result.success) return invalidResponse(result.error.issues);
-    },
-  ),
+  zValidator('json', z.object(validationParams), (result) => {
+    if (!result.success) return invalidResponse(result.error.issues);
+  }),
 );
 
 /**
@@ -26,9 +24,10 @@ const validation = factory.createMiddleware(
  */
 const handlers = factory.createHandlers(validation, async (c) => {
   const body = c.req.valid('json');
+  const userId = c.get('userId');
   const item = await db.taskGroup.create({
     data: {
-      userId: 1,
+      userId: userId,
       name: body.name,
     },
     select: {
@@ -39,7 +38,7 @@ const handlers = factory.createHandlers(validation, async (c) => {
 
   return jsonResponse(
     JSON.stringify({
-      item: item,
+      id: item.id,
     }),
   );
 });

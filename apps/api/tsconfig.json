@@ -1,14 +1,12 @@
 {
-	"compilerOptions": {
-		"strict": true,
-		"jsx": "react-jsx",
-		"jsxImportSource": "hono/jsx",
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"esModuleInterop": true,
-		"baseUrl": "./",
-		"paths": {
-			"@/*": ["./src/*"]
-		}
-	}
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
 }

@@ -2,7 +2,6 @@ import { db } from '@/lib/database';
 import { jsonResponse } from '@/utils';
 import { createFactory } from 'hono/factory';
 
-
 const factory = createFactory();
 
 /**
@@ -11,25 +10,27 @@ const factory = createFactory();
 const handlers = factory.createHandlers(async (c) => {
   const { taskGroupId } = c.req.param();
 
-  const tasks = await db.task.deleteMany({
+  const userId = c.get('userId');
+
+  await db.task.deleteMany({
     where: {
       taskGroupId: Number(taskGroupId),
       taskGroup: {
-        userId: 1,
+        userId: userId,
       },
     },
   });
 
-  const taskGroup = await db.taskGroup.delete({
+  const item = await db.taskGroup.delete({
     where: {
       id: Number(taskGroupId),
-      userId: 1,
+      userId: userId,
     },
   });
 
   return jsonResponse(
     JSON.stringify({
-      item: taskGroup,
+      id: item.id,
     }),
   );
 });
