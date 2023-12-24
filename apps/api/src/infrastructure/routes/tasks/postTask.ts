@@ -1,5 +1,6 @@
 import { CreateTask } from '@/application/usecases/task/CreateTask';
 import { GetTaskGroup } from '@/application/usecases/taskGroup/GetTaskGroup';
+import { TaskController } from '@/interfaces/controllers/TaskController';
 import { TaskGroupRepository } from '@/interfaces/database/TaskGroupRepository';
 import { TaskRepository } from '@/interfaces/database/TaskRepository';
 import { z } from '@/lib/zod';
@@ -37,30 +38,21 @@ const validation = factory.createMiddleware(
  */
 const handlers = factory.createHandlers(validation, async (c) => {
   const body = c.req.valid('json');
-
   const userId = c.get('userId');
 
-  const getTaskGroup = new GetTaskGroup(new TaskGroupRepository());
-  const taskGroup = await getTaskGroup.execute(body.taskGroupId, userId);
-
-  if (!taskGroup) {
-    return notFoundResponse();
-  }
-
-  const createTask = new CreateTask(new TaskRepository());
-  const item = await createTask.execute({
-    props: {
-      taskGroupId: body.taskGroupId,
-      title: body.title,
-      description: body.description,
-      dueDate: body.dueDate,
-      dueTime: body.dueTime,
-    },
+  const taskController = new TaskController();
+  const res = await taskController.createTask({
+    userId: userId,
+    taskGroupId: body.taskGroupId,
+    title: body.title,
+    description: body.description,
+    dueDate: body.dueDate,
+    dueTime: body.dueTime,
   });
 
   return jsonResponse(
     JSON.stringify({
-      id: item.props.id,
+      id: res,
     }),
   );
 });
