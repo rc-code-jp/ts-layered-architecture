@@ -9,25 +9,5 @@ pnpm install
 ## development
 
 ```zsh
-pnpm @api dev
-```
-
-## init db
-
-```zsh
-pnpm @api prisma:init
-```
-
-## seed
-
-```zsh
-pnpm @api prisma prisma:seed
-```
-
-## Database GUO Tool
-
-open
-
-```zsh
-pnpm @api prisma:studio
+pnpm @rest dev
 ```

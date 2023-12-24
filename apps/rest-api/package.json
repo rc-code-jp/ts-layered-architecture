@@ -1,5 +1,5 @@
 {
-  "name": "@ts-layered-architecture/api",
+  "name": "@ts-layered-architecture/rest-api",
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts",
