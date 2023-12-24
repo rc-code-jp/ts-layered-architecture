@@ -1,6 +1,6 @@
 import { ITaskRepository } from '@/application/repositries/ITaskRepository';
 import { TaskModel } from '@/domain/models/TaskModel';
-import { db } from '@/lib/database';
+import { db } from '@/infrastructure/store/database/db';
 
 export class TaskRepository implements ITaskRepository {
   findAll(userId: number): Promise<TaskModel[]> {

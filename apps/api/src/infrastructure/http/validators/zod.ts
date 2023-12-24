@@ -30,4 +30,14 @@ const customErrorMap: ZodErrorMap = (issue, ctx) => {
 
 z.setErrorMap(customErrorMap);
 
-export { z };
+// バリデーションを整形
+const parseValidationError = (issues: Array<z.ZodIssue>) => {
+  return issues.map((issue) => {
+    return {
+      names: issue.path,
+      message: issue.message,
+    };
+  });
+};
+
+export { z, parseValidationError };

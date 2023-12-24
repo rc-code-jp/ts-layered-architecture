@@ -1,5 +1,5 @@
-import { db } from '@/lib/database';
-import { jsonResponse, notFoundResponse } from '@/utils';
+import { jsonResponse, notFoundResponse } from '@/infrastructure/http/responses';
+import { db } from '@/infrastructure/store/database/db';
 
 import { createFactory } from 'hono/factory';
 

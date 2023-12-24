@@ -1,7 +1,6 @@
-import { db } from '@/lib/database';
-import { jsonResponse } from '@/utils';
+import { jsonResponse } from '@/infrastructure/http/responses';
+import { db } from '@/infrastructure/store/database/db';
 import { createFactory } from 'hono/factory';
-
 
 const factory = createFactory();
 

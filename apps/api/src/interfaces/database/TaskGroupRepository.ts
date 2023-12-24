@@ -1,6 +1,6 @@
 import { ITaskGroupRepository } from '@/application/repositries/ITaskGroupRepository';
 import { TaskGroupModel } from '@/domain/models/TaskGroupModel';
-import { db } from '@/lib/database';
+import { db } from '@/infrastructure/store/database/db';
 
 export class TaskGroupRepository implements ITaskGroupRepository {
   findAll(userId: number): Promise<TaskGroupModel[]> {

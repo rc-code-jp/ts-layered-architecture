@@ -1,29 +1,14 @@
-import { equal } from 'assert';
-import { db } from '@/lib/database';
-import { z } from '@/lib/zod';
-import { invalidResponse, jsonResponse, notFoundResponse } from '@/utils';
-import { zValidator } from '@hono/zod-validator';
+import { jsonResponse, notFoundResponse } from '@/infrastructure/http/responses';
+import { db } from '@/infrastructure/store/database/db';
 import { createFactory } from 'hono/factory';
+import { patchDoneValidation } from '../../validators/tasks';
 
 const factory = createFactory();
-
-const validationParams = {
-  done: z.boolean(),
-};
-
-/**
- * バリデーションミドルウェア
- */
-const validation = factory.createMiddleware(
-  zValidator('json', z.object(validationParams), (result) => {
-    if (!result.success) return invalidResponse(result.error.issues);
-  }),
-);
 
 /**
  * タスクの完了状態を変更
  */
-const handlers = factory.createHandlers(validation, async (c) => {
+const handlers = factory.createHandlers(patchDoneValidation, async (c) => {
   const { taskId } = c.req.param();
   const body = c.req.valid('json');
   const userId = c.get('userId');

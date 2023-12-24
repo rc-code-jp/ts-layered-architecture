@@ -33,7 +33,12 @@ export const notFoundResponse = (message = 'Not Found') => {
  * @param message string[]
  * @returns Response
  */
-export const invalidResponse = (message: Array<ZodIssue>) => {
+export const invalidResponse = (
+  message: Array<{
+    names: Array<string | number>;
+    message: string;
+  }>,
+) => {
   return new Response(JSON.stringify(message), {
     status: 422,
     headers: {
