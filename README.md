@@ -15,13 +15,13 @@ pnpm @api dev
 ## init db
 
 ```zsh
-pnpm @api prisma migrate dev --name init
+pnpm @api prisma:init
 ```
 
 ## seed
 
 ```zsh
-pnpm @api prisma db prisma:seed
+pnpm @api prisma prisma:seed
 ```
 
 ## Database GUO Tool
@@ -29,5 +29,5 @@ pnpm @api prisma db prisma:seed
 open
 
 ```zsh
-pnpm @api prisma studio
+pnpm @api prisma:studio
 ```

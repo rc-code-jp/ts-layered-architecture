@@ -1,7 +1,7 @@
 import { jsonResponse, notFoundResponse } from '@/infrastructure/http/responses';
+import { patchValidation } from '@/infrastructure/http/validators/taskGroups';
 import { db } from '@/infrastructure/store/database/db';
 import { createFactory } from 'hono/factory';
-import { patchValidation } from '../../validators/taskGroups';
 
 const factory = createFactory();
 

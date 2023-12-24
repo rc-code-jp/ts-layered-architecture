@@ -1,4 +1,4 @@
-import { ITaskGroupRepository } from '@/application/repositries/ITaskGroupRepository';
+import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepository';
 
 export class GetTaskGroup {
   constructor(private repository: ITaskGroupRepository) {}

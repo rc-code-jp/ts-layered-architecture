@@ -1,4 +1,4 @@
-import { ITaskGroupRepository } from '@/application/repositries/ITaskGroupRepository';
+import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepository';
 import { TaskGroupModel } from '@/domain/models/TaskGroupModel';
 import { db } from '@/infrastructure/store/database/db';
 

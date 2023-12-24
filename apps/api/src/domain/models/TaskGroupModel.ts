@@ -3,6 +3,7 @@ export class TaskGroupModel {
     readonly props: {
       id: number;
       name: string;
+      sort: number;
     },
   ) {}
 }

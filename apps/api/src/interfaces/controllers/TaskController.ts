@@ -1,6 +1,8 @@
-import { ITaskGroupRepository } from '@/application/repositries/ITaskGroupRepository';
-import { ITaskRepository } from '@/application/repositries/ITaskRepository';
+import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepository';
+import { ITaskRepository } from '@/application/repositories/ITaskRepository';
 import { CreateTask } from '@/application/usecases/task/CreateTask';
+import { GetTask } from '@/application/usecases/task/GetTask';
+import { UpdateTask } from '@/application/usecases/task/UpdateTask';
 import { GetTaskGroup } from '@/application/usecases/taskGroup/GetTaskGroup';
 import { TaskGroupRepository } from '../database/TaskGroupRepository';
 import { TaskRepository } from '../database/TaskRepository';
@@ -26,7 +28,7 @@ export class TaskController {
     const taskGroup = await getTaskGroup.execute(params.taskGroupId, params.userId);
 
     if (!taskGroup) {
-      throw new Error('Not Fount Task Group');
+      return 0;
     }
 
     const createTask = new CreateTask(this.taskRepository);
@@ -37,6 +39,62 @@ export class TaskController {
         description: params.description,
         dueDate: params.dueDate,
         dueTime: params.dueTime,
+        sort: 0,
+      },
+    });
+
+    return item.props.id;
+  }
+
+  async updateTask(params: {
+    id: number;
+    userId: number;
+    title: string;
+    description?: string;
+    dueDate?: string;
+    dueTime?: string;
+    done?: boolean;
+  }) {
+    const getTask = new GetTask(this.taskRepository);
+    const task = await getTask.execute(params.id, params.userId);
+
+    if (!task) {
+      return 0;
+    }
+
+    const updateTask = new UpdateTask(this.taskRepository);
+    const item = await updateTask.execute({
+      props: {
+        ...task.props,
+        title: params.title,
+        description: params.description,
+        dueDate: params.dueDate,
+        dueTime: params.dueTime,
+        done: params.done,
+        sort: 0,
+      },
+    });
+
+    return item.props.id;
+  }
+
+  async updateTaskDone(params: {
+    id: number;
+    userId: number;
+    done?: boolean;
+  }) {
+    const getTask = new GetTask(this.taskRepository);
+    const task = await getTask.execute(params.id, params.userId);
+
+    if (!task) {
+      throw new Error('Not Fount Task');
+    }
+
+    const updateTask = new UpdateTask(this.taskRepository);
+    const item = await updateTask.execute({
+      props: {
+        ...task.props,
+        done: params.done,
       },
     });
 

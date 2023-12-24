@@ -1,7 +1,7 @@
 import { jsonResponse } from '@/infrastructure/http/responses';
+import { postValidation } from '@/infrastructure/http/validators/tasks';
 import { TaskController } from '@/interfaces/controllers/TaskController';
 import { createFactory } from 'hono/factory';
-import { postValidation } from '../../validators/tasks';
 
 const factory = createFactory();
 

@@ -1,14 +1,24 @@
-import { ITaskRepository } from '@/application/repositries/ITaskRepository';
+import { ITaskRepository } from '@/application/repositories/ITaskRepository';
 import { TaskModel } from '@/domain/models/TaskModel';
 import { db } from '@/infrastructure/store/database/db';
 
 export class TaskRepository implements ITaskRepository {
-  findAll(userId: number): Promise<TaskModel[]> {
-    throw new Error('Method not implemented.');
-  }
+  async findOne(id: number, userId: number): Promise<TaskModel | null> {
+    const item = await db.task.findFirst({
+      where: { id, taskGroup: { userId } },
+    });
+    if (!item) return null;
 
-  findOne(id: number, userId: number): Promise<TaskModel> {
-    throw new Error('Method not implemented.');
+    const model = new TaskModel({
+      id: item.id,
+      taskGroupId: item.taskGroupId,
+      title: item.title,
+      description: item.description ?? undefined,
+      dueDate: item.dueDate ?? undefined,
+      dueTime: item.dueTime ?? undefined,
+      done: item.done,
+    });
+    return model;
   }
 
   async save(task: TaskModel): Promise<TaskModel> {

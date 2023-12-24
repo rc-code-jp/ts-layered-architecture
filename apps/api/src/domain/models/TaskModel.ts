@@ -8,6 +8,7 @@ export class TaskModel {
       description?: string;
       dueDate?: string;
       dueTime?: string;
+      sort: number;
     },
   ) {}
 }

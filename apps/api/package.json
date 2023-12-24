@@ -5,8 +5,12 @@
     "dev": "tsx watch src/index.ts",
     "format": "biome format --write ./src",
     "lint": "biome lint ./src --apply",
-    "prisma": "prisma",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:init": "prisma migrate dev --name init",
+    "prisma:seed": "prisma db seed",
+    "prisma:studio": "prisma studio"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "volta": {
     "extends": "../../package.json"
