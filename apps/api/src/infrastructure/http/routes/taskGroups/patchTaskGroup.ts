@@ -1,6 +1,6 @@
-import { jsonResponse, notFoundResponse } from '@/infrastructure/http/responses';
+import { jsonResponse } from '@/infrastructure/http/responses';
 import { patchValidation } from '@/infrastructure/http/validators/taskGroups';
-import { db } from '@/infrastructure/store/database/db';
+import { TaskGroupController } from '@/interfaces/controllers/TaskGroupController';
 import { createFactory } from 'hono/factory';
 
 const factory = createFactory();
@@ -13,27 +13,16 @@ const handlers = factory.createHandlers(patchValidation, async (c) => {
   const body = c.req.valid('json');
   const userId = c.get('userId');
 
-  const item = await db.taskGroup
-    .update({
-      where: {
-        id: Number(taskGroupId),
-        userId: userId,
-      },
-      data: {
-        name: body.name,
-      },
-      select: {
-        id: true,
-        name: true,
-      },
-    })
-    .catch(() => null);
-
-  if (!item) return notFoundResponse();
+  const taskGroupController = new TaskGroupController();
+  const res = await taskGroupController.updateTaskGroup({
+    id: Number(taskGroupId),
+    userId,
+    name: body.name,
+  });
 
   return jsonResponse(
     JSON.stringify({
-      id: item.id,
+      id: res,
     }),
   );
 });

@@ -5,7 +5,7 @@ export class CreateTask {
   constructor(private repository: ITaskRepository) {}
 
   execute(params: TaskModel) {
-    const taskModel = new TaskModel({
+    const model = new TaskModel({
       taskGroupId: params.props.taskGroupId,
       title: params.props.title,
       done: false,
@@ -14,6 +14,6 @@ export class CreateTask {
       description: params.props.description,
       sort: 0,
     });
-    return this.repository.save(taskModel);
+    return this.repository.save(model);
   }
 }

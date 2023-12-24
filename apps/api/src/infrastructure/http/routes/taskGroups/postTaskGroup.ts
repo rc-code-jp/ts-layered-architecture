@@ -1,6 +1,6 @@
 import { jsonResponse } from '@/infrastructure/http/responses';
 import { postValidation } from '@/infrastructure/http/validators/taskGroups';
-import { db } from '@/infrastructure/store/database/db';
+import { TaskGroupController } from '@/interfaces/controllers/TaskGroupController';
 import { createFactory } from 'hono/factory';
 
 const factory = createFactory();
@@ -11,20 +11,16 @@ const factory = createFactory();
 const handlers = factory.createHandlers(postValidation, async (c) => {
   const body = c.req.valid('json');
   const userId = c.get('userId');
-  const item = await db.taskGroup.create({
-    data: {
-      userId: userId,
-      name: body.name,
-    },
-    select: {
-      id: true,
-      name: true,
-    },
+
+  const taskGroupController = new TaskGroupController();
+  const res = await taskGroupController.createTaskGroup({
+    userId,
+    name: body.name,
   });
 
   return jsonResponse(
     JSON.stringify({
-      id: item.id,
+      id: res,
     }),
   );
 });

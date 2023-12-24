@@ -1,13 +1,13 @@
 import { Hono } from 'hono';
 import { deleteTaskGroup } from './deleteTaskGroup';
+import { getTaskGroupList } from './getTaskGroupList';
 import { getTaskGroupOne } from './getTaskGroupOne';
-import { getTaskGroups } from './getTaskGroups';
 import { patchTaskGroup } from './patchTaskGroup';
 import { postTaskGroup } from './postTaskGroup';
 
 const app = new Hono();
 
-app.get('/', ...getTaskGroups);
+app.get('/', ...getTaskGroupList);
 
 app.get('/:taskGroupId', ...getTaskGroupOne);
 

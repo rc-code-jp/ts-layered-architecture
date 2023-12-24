@@ -1,5 +1,5 @@
 import { jsonResponse } from '@/infrastructure/http/responses';
-import { db } from '@/infrastructure/store/database/db';
+import { TaskGroupController } from '@/interfaces/controllers/TaskGroupController';
 import { createFactory } from 'hono/factory';
 
 const factory = createFactory();
@@ -12,25 +12,15 @@ const handlers = factory.createHandlers(async (c) => {
 
   const userId = c.get('userId');
 
-  await db.task.deleteMany({
-    where: {
-      taskGroupId: Number(taskGroupId),
-      taskGroup: {
-        userId: userId,
-      },
-    },
-  });
-
-  const item = await db.taskGroup.delete({
-    where: {
-      id: Number(taskGroupId),
-      userId: userId,
-    },
+  const taskGroupController = new TaskGroupController();
+  const res = await taskGroupController.deleteTaskGroup({
+    id: Number(taskGroupId),
+    userId,
   });
 
   return jsonResponse(
     JSON.stringify({
-      id: item.id,
+      id: res,
     }),
   );
 });

@@ -70,6 +70,13 @@ export class TaskGroupRepository implements ITaskGroupRepository {
   }
 
   async delete(item: TaskGroupModel): Promise<TaskGroupModel> {
+    // 外部キー制約のため、先にタスクを削除する
+    await db.task.deleteMany({
+      where: {
+        taskGroupId: item.props.id,
+      },
+    });
+
     await db.taskGroup.delete({
       where: {
         id: item.props.id,

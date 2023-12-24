@@ -1,32 +1,25 @@
-import { jsonResponse, notFoundResponse } from '@/infrastructure/http/responses';
+import { jsonResponse } from '@/infrastructure/http/responses';
 import { TaskGroupController } from '@/interfaces/controllers/TaskGroupController';
-
 import { createFactory } from 'hono/factory';
 
 const factory = createFactory();
 
 /**
- * タスクグループ詳細取得
+ * タスクグループ一覧取得
  */
 const handlers = factory.createHandlers(async (c) => {
-  const { taskGroupId } = c.req.param();
   const userId = c.get('userId');
 
   const taskGroupController = new TaskGroupController();
-  const res = await taskGroupController.getTaskGroup({
-    id: Number(taskGroupId),
+  const list = await taskGroupController.getTaskGroupList({
     userId,
   });
 
-  if (!res) {
-    return notFoundResponse();
-  }
-
   return jsonResponse(
     JSON.stringify({
-      item: res,
+      list: list,
     }),
   );
 });
 
-export const getTaskGroupOne = handlers;
+export const getTaskGroupList = handlers;
