@@ -17,40 +17,61 @@ export class TaskRepository implements ITaskRepository {
       dueDate: item.dueDate ?? undefined,
       dueTime: item.dueTime ?? undefined,
       done: item.done,
+      sort: item.sort,
     });
     return model;
   }
 
-  async save(task: TaskModel): Promise<TaskModel> {
-    if (task.props.id) {
+  async save(item: TaskModel): Promise<TaskModel> {
+    if (item.props.id) {
       await db.task.update({
-        where: { id: task.props.id },
+        where: { id: item.props.id },
         data: {
-          title: task.props.title,
-          description: task.props.description,
-          dueDate: task.props.dueDate,
-          dueTime: task.props.dueTime,
-          done: task.props.done,
+          title: item.props.title,
+          description: item.props.description,
+          dueDate: item.props.dueDate,
+          dueTime: item.props.dueTime,
+          done: item.props.done,
+          sort: item.props.sort,
         },
       });
     } else {
-      const item = await db.task.create({
+      const res = await db.task.create({
         data: {
-          title: task.props.title,
-          taskGroupId: task.props.taskGroupId,
-          description: task.props.description,
-          dueDate: task.props.dueDate,
-          dueTime: task.props.dueTime,
-          done: task.props.done,
+          title: item.props.title,
+          taskGroupId: item.props.taskGroupId,
+          description: item.props.description,
+          dueDate: item.props.dueDate,
+          dueTime: item.props.dueTime,
+          done: item.props.done,
+          sort: item.props.sort,
         },
       });
-      task.props.id = item.id;
+      item.props.id = res.id;
     }
 
-    return task;
+    return item;
   }
 
-  delete(id: number): Promise<TaskModel> {
-    throw new Error('Method not implemented.');
+  async delete(item: TaskModel): Promise<TaskModel> {
+    await db.task.delete({
+      where: {
+        id: item.props.id,
+      },
+    });
+
+    return item;
+  }
+
+  async deleteDone(userId: number, taskGroupId?: number): Promise<number> {
+    const res = await db.task.deleteMany({
+      where: {
+        done: true,
+        taskGroup: { userId },
+        ...(taskGroupId ? { taskGroupId } : {}),
+      },
+    });
+
+    return res.count;
   }
 }

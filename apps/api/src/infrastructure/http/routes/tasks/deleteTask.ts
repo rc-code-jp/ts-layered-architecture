@@ -5,23 +5,23 @@ import { createFactory } from 'hono/factory';
 const factory = createFactory();
 
 /**
- * 完了したタスクを削除する
+ * タスクを削除する
  */
 const handlers = factory.createHandlers(async (c) => {
-  const { taskGroupId } = c.req.queries();
+  const { taskId } = c.req.param();
   const userId = c.get('userId');
 
   const taskController = new TaskController();
-  const res = await taskController.deleteDoneTasks({
+  const res = await taskController.deleteTask({
+    id: Number(taskId),
     userId: userId,
-    taskGroupId: taskGroupId ? Number(taskGroupId) : undefined,
   });
 
   return jsonResponse(
     JSON.stringify({
-      count: res,
+      id: res,
     }),
   );
 });
 
-export const deleteDoneTasks = handlers;
+export const deleteTask = handlers;

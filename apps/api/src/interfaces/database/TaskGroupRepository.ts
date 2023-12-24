@@ -3,8 +3,28 @@ import { TaskGroupModel } from '@/domain/models/TaskGroupModel';
 import { db } from '@/infrastructure/store/database/db';
 
 export class TaskGroupRepository implements ITaskGroupRepository {
-  findAll(userId: number): Promise<TaskGroupModel[]> {
-    throw new Error('Method not implemented.');
+  async findAll(userId: number): Promise<TaskGroupModel[]> {
+    const list = await db.taskGroup.findMany({
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        sort: true,
+      },
+      where: {
+        userId: userId,
+      },
+    });
+    const models = list.map(
+      (item) =>
+        new TaskGroupModel({
+          id: item.id,
+          userId: item.userId,
+          name: item.name,
+          sort: item.sort,
+        }),
+    );
+    return models;
   }
 
   async findOne(id: number, userId: number): Promise<TaskGroupModel | null> {
@@ -19,17 +39,43 @@ export class TaskGroupRepository implements ITaskGroupRepository {
 
     const model = new TaskGroupModel({
       id: item.id,
+      userId: item.userId,
       name: item.name,
+      sort: item.sort,
     });
 
     return model;
   }
 
-  save(task: TaskGroupModel): Promise<TaskGroupModel> {
-    throw new Error('Method not implemented.');
+  async save(item: TaskGroupModel): Promise<TaskGroupModel> {
+    if (item.props.id) {
+      await db.taskGroup.update({
+        where: { id: item.props.id },
+        data: {
+          name: item.props.name,
+          sort: item.props.sort,
+        },
+      });
+    } else {
+      const res = await db.taskGroup.create({
+        data: {
+          userId: item.props.userId,
+          name: item.props.name,
+          sort: item.props.sort,
+        },
+      });
+      item.props.id = res.id;
+    }
+    return item;
   }
 
-  delete(id: number): Promise<TaskGroupModel> {
-    throw new Error('Method not implemented.');
+  async delete(item: TaskGroupModel): Promise<TaskGroupModel> {
+    await db.taskGroup.delete({
+      where: {
+        id: item.props.id,
+      },
+    });
+
+    return item;
   }
 }

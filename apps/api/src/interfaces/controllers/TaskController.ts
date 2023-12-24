@@ -1,6 +1,8 @@
 import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepository';
 import { ITaskRepository } from '@/application/repositories/ITaskRepository';
 import { CreateTask } from '@/application/usecases/task/CreateTask';
+import { DeleteDoneTasks } from '@/application/usecases/task/DeleteDoneTasks';
+import { DeleteTask } from '@/application/usecases/task/DeleteTask';
 import { GetTask } from '@/application/usecases/task/GetTask';
 import { UpdateTask } from '@/application/usecases/task/UpdateTask';
 import { GetTaskGroup } from '@/application/usecases/taskGroup/GetTaskGroup';
@@ -99,5 +101,32 @@ export class TaskController {
     });
 
     return item.props.id;
+  }
+
+  async deleteTask(params: {
+    id: number;
+    userId: number;
+  }) {
+    const getTask = new GetTask(this.taskRepository);
+    const task = await getTask.execute(params.id, params.userId);
+
+    if (!task) {
+      throw new Error('Not Fount Task');
+    }
+
+    const deleteTask = new DeleteTask(this.taskRepository);
+    const item = await deleteTask.execute(task);
+
+    return item.props.id;
+  }
+
+  async deleteDoneTasks(params: {
+    userId: number;
+    taskGroupId?: number;
+  }) {
+    const deleteDoneTasks = new DeleteDoneTasks(this.taskRepository);
+    const count = await deleteDoneTasks.execute(params.userId, params.taskGroupId);
+
+    return count;
   }
 }
