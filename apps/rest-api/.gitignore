@@ -25,3 +25,4 @@ experimental/**/*.db
 dev.db
 *.db-journal
 *.env*
+!env/*
