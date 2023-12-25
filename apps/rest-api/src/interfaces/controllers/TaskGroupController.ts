@@ -56,23 +56,11 @@ export class TaskGroupController {
     userId: number;
     name: string;
   }) {
-    const getTaskGroup = new GetTaskGroup(this.taskGroupRepository);
-    const taskGroup = await getTaskGroup.execute({
-      id: params.id,
-      userId: params.userId,
-    });
-
-    if (!taskGroup) {
-      return 0;
-    }
-
     const updateTask = new UpdateTaskGroup(this.taskGroupRepository);
     const item = await updateTask.execute({
-      props: {
-        ...taskGroup.props,
-        name: params.name,
-        sort: 0,
-      },
+      userId: params.userId,
+      taskGroupId: params.id,
+      name: params.name,
     });
 
     return item.props.id;
@@ -82,22 +70,12 @@ export class TaskGroupController {
     id: number;
     userId: number;
   }) {
-    const getTaskGroup = new GetTaskGroup(this.taskGroupRepository);
-    const taskGroup = await getTaskGroup.execute({
-      id: params.id,
-      userId: params.userId,
-    });
-
-    if (!taskGroup) {
-      throw new Error('Not Found Task');
-    }
-
     const deleteTaskGroup = new DeleteTaskGroup(this.taskGroupRepository);
-    await deleteTaskGroup.execute({
+    const res = await deleteTaskGroup.execute({
       taskGroupId: params.id,
       userId: params.userId,
     });
 
-    return params.id;
+    return res;
   }
 }

@@ -55,15 +55,14 @@ export class TaskRepository implements ITaskRepository {
     return item;
   }
 
-  async delete(params: { userId: number; taskGroupId: number }): Promise<number> {
-    await db.task.delete({
+  async delete(params: { item: TaskModel }): Promise<number> {
+    const item = await db.task.delete({
       where: {
-        id: params.taskGroupId,
-        taskGroup: { userId: params.userId },
+        id: params.item.props.id,
       },
     });
 
-    return params.taskGroupId;
+    return item.id;
   }
 
   async deleteDone(params: { userId: number; taskGroupId?: number }): Promise<number> {

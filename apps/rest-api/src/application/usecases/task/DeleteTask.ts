@@ -1,10 +1,16 @@
 import { ITaskRepository } from '@/application/repositories/ITaskRepository';
-import { TaskModel } from '@/domain/models/TaskModel';
 
 export class DeleteTask {
   constructor(private repository: ITaskRepository) {}
 
-  execute(params: { userId: number; taskGroupId: number }) {
-    return this.repository.delete({ userId: params.userId, taskGroupId: params.taskGroupId });
+  async execute(params: { userId: number; taskId: number }) {
+    const model = await this.repository.findOne({
+      id: params.taskId,
+      userId: params.userId,
+    });
+    if (!model) {
+      throw new Error('Task not found');
+    }
+    return this.repository.delete({ item: model });
   }
 }

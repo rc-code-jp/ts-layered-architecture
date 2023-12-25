@@ -3,7 +3,6 @@ import { ITaskRepository } from '@/application/repositories/ITaskRepository';
 import { CreateTask } from '@/application/usecases/task/CreateTask';
 import { DeleteDoneTasks } from '@/application/usecases/task/DeleteDoneTasks';
 import { DeleteTask } from '@/application/usecases/task/DeleteTask';
-import { GetTask } from '@/application/usecases/task/GetTask';
 import { UpdateTask } from '@/application/usecases/task/UpdateTask';
 import { GetTaskGroup } from '@/application/usecases/taskGroup/GetTaskGroup';
 import { TaskGroupRepository } from '../database/TaskGroupRepository';
@@ -60,27 +59,16 @@ export class TaskController {
     dueTime?: string;
     done?: boolean;
   }) {
-    const getTask = new GetTask(this.taskRepository);
-    const task = await getTask.execute({
-      id: params.id,
-      userId: params.userId,
-    });
-
-    if (!task) {
-      return 0;
-    }
-
     const updateTask = new UpdateTask(this.taskRepository);
     const item = await updateTask.execute({
-      props: {
-        ...task.props,
-        title: params.title,
-        description: params.description,
-        dueDate: params.dueDate,
-        dueTime: params.dueTime,
-        done: params.done,
-        sort: 0,
-      },
+      taskId: params.id,
+      userId: params.userId,
+      title: params.title,
+      description: params.description,
+      dueDate: params.dueDate,
+      dueTime: params.dueTime,
+      done: params.done,
+      sort: 0,
     });
 
     return item.props.id;
@@ -89,24 +77,13 @@ export class TaskController {
   async updateTaskDone(params: {
     id: number;
     userId: number;
-    done?: boolean;
+    done: boolean;
   }) {
-    const getTask = new GetTask(this.taskRepository);
-    const task = await getTask.execute({
-      id: params.id,
-      userId: params.userId,
-    });
-
-    if (!task) {
-      throw new Error('Not Found Task');
-    }
-
     const updateTask = new UpdateTask(this.taskRepository);
     const item = await updateTask.execute({
-      props: {
-        ...task.props,
-        done: params.done,
-      },
+      taskId: params.id,
+      userId: params.userId,
+      done: params.done,
     });
 
     return item.props.id;
@@ -116,23 +93,13 @@ export class TaskController {
     id: number;
     userId: number;
   }) {
-    const getTask = new GetTask(this.taskRepository);
-    const task = await getTask.execute({
-      id: params.id,
-      userId: params.userId,
-    });
-
-    if (!task) {
-      throw new Error('Not Found Task');
-    }
-
     const deleteTask = new DeleteTask(this.taskRepository);
-    await deleteTask.execute({
+    const res = await deleteTask.execute({
       userId: params.userId,
-      taskGroupId: params.id,
+      taskId: params.id,
     });
 
-    return params.id;
+    return res;
   }
 
   async deleteDoneTasks(params: {

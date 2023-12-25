@@ -1,13 +1,16 @@
 import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepository';
-import { TaskGroupModel } from '@/domain/models/TaskGroupModel';
 
 export class DeleteTaskGroup {
   constructor(private repository: ITaskGroupRepository) {}
 
-  execute(params: { userId: number; taskGroupId: number }) {
-    return this.repository.delete({
+  async execute(params: { userId: number; taskGroupId: number }) {
+    const model = await this.repository.findOne({
+      id: params.taskGroupId,
       userId: params.userId,
-      taskGroupId: params.taskGroupId,
     });
+    if (!model) {
+      throw new Error('TaskGroup not found');
+    }
+    return this.repository.delete({ item: model });
   }
 }
