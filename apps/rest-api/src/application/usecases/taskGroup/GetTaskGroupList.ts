@@ -4,6 +4,8 @@ export class GetTaskGroupList {
   constructor(private repository: ITaskGroupRepository) {}
 
   execute(userId: number) {
-    return this.repository.findAll(userId);
+    return this.repository.findAll({
+      userId,
+    });
   }
 }

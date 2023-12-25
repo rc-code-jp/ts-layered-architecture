@@ -3,7 +3,10 @@ import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepos
 export class GetTaskGroup {
   constructor(private repository: ITaskGroupRepository) {}
 
-  execute(id: number, userId: number) {
-    return this.repository.findOne(id, userId);
+  execute(params: { id: number; userId: number }) {
+    return this.repository.findOne({
+      id: params.id,
+      userId: params.userId,
+    });
   }
 }

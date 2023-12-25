@@ -12,8 +12,8 @@ export class CreateTask {
       dueDate: params.props.dueDate,
       dueTime: params.props.dueTime,
       description: params.props.description,
-      sort: 0,
+      sort: params.props.sort,
     });
-    return this.repository.save(model);
+    return this.repository.save({ item: model });
   }
 }

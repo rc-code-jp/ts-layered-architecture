@@ -3,9 +3,9 @@ import { TaskModel } from '@/domain/models/TaskModel';
 import { db } from '@/infrastructure/store/database/db';
 
 export class TaskRepository implements ITaskRepository {
-  async findOne(id: number, userId: number): Promise<TaskModel | null> {
+  async findOne(params: { id: number; userId: number }): Promise<TaskModel | null> {
     const item = await db.task.findFirst({
-      where: { id, taskGroup: { userId } },
+      where: { id: params.id, taskGroup: { userId: params.userId } },
     });
     if (!item) return null;
 
@@ -22,7 +22,9 @@ export class TaskRepository implements ITaskRepository {
     return model;
   }
 
-  async save(item: TaskModel): Promise<TaskModel> {
+  async save(params: { item: TaskModel }): Promise<TaskModel> {
+    const item = params.item;
+
     if (item.props.id) {
       await db.task.update({
         where: { id: item.props.id },
@@ -53,22 +55,23 @@ export class TaskRepository implements ITaskRepository {
     return item;
   }
 
-  async delete(item: TaskModel): Promise<TaskModel> {
+  async delete(params: { userId: number; taskGroupId: number }): Promise<number> {
     await db.task.delete({
       where: {
-        id: item.props.id,
+        id: params.taskGroupId,
+        taskGroup: { userId: params.userId },
       },
     });
 
-    return item;
+    return params.taskGroupId;
   }
 
-  async deleteDone(userId: number, taskGroupId?: number): Promise<number> {
+  async deleteDone(params: { userId: number; taskGroupId?: number }): Promise<number> {
     const res = await db.task.deleteMany({
       where: {
         done: true,
-        taskGroup: { userId },
-        ...(taskGroupId ? { taskGroupId } : {}),
+        taskGroup: { userId: params.userId },
+        ...(params.taskGroupId ? { taskGroupId: params.taskGroupId } : {}),
       },
     });
 

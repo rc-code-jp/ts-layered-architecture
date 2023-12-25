@@ -1,8 +1,8 @@
 import { TaskGroupModel } from '@/domain/models/TaskGroupModel';
 
 export interface ITaskGroupRepository {
-  findAll(userId: number): Promise<TaskGroupModel[]>;
-  findOne(id: number, userId: number): Promise<TaskGroupModel | null>;
-  save(task: TaskGroupModel): Promise<TaskGroupModel>;
-  delete(item: TaskGroupModel): Promise<TaskGroupModel>;
+  findAll(params: { userId: number }): Promise<TaskGroupModel[]>;
+  findOne(params: { id: number; userId: number }): Promise<TaskGroupModel | null>;
+  save(params: { item: TaskGroupModel }): Promise<TaskGroupModel>;
+  delete(params: { taskGroupId: number; userId: number }): Promise<number>;
 }

@@ -4,7 +4,10 @@ import { TaskGroupModel } from '@/domain/models/TaskGroupModel';
 export class DeleteTaskGroup {
   constructor(private repository: ITaskGroupRepository) {}
 
-  execute(params: TaskGroupModel) {
-    return this.repository.delete(params);
+  execute(params: { userId: number; taskGroupId: number }) {
+    return this.repository.delete({
+      userId: params.userId,
+      taskGroupId: params.taskGroupId,
+    });
   }
 }

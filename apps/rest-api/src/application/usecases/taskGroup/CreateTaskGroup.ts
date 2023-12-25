@@ -10,6 +10,6 @@ export class CreateTaskGroup {
       userId: params.props.userId,
       sort: 0,
     });
-    return this.repository.save(model);
+    return this.repository.save({ item: model });
   }
 }

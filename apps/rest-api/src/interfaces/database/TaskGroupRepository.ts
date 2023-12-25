@@ -3,7 +3,7 @@ import { TaskGroupModel } from '@/domain/models/TaskGroupModel';
 import { db } from '@/infrastructure/store/database/db';
 
 export class TaskGroupRepository implements ITaskGroupRepository {
-  async findAll(userId: number): Promise<TaskGroupModel[]> {
+  async findAll(params: { userId: number }): Promise<TaskGroupModel[]> {
     const list = await db.taskGroup.findMany({
       select: {
         id: true,
@@ -12,7 +12,7 @@ export class TaskGroupRepository implements ITaskGroupRepository {
         sort: true,
       },
       where: {
-        userId: userId,
+        userId: params.userId,
       },
     });
     const models = list.map(
@@ -27,11 +27,11 @@ export class TaskGroupRepository implements ITaskGroupRepository {
     return models;
   }
 
-  async findOne(id: number, userId: number): Promise<TaskGroupModel | null> {
+  async findOne(params: { id: number; userId: number }): Promise<TaskGroupModel | null> {
     const item = await db.taskGroup.findFirst({
       where: {
-        id: id,
-        userId: userId,
+        id: params.id,
+        userId: params.userId,
       },
     });
 
@@ -47,7 +47,9 @@ export class TaskGroupRepository implements ITaskGroupRepository {
     return model;
   }
 
-  async save(item: TaskGroupModel): Promise<TaskGroupModel> {
+  async save(params: { item: TaskGroupModel }): Promise<TaskGroupModel> {
+    const item = params.item;
+
     if (item.props.id) {
       await db.taskGroup.update({
         where: { id: item.props.id },
@@ -69,20 +71,20 @@ export class TaskGroupRepository implements ITaskGroupRepository {
     return item;
   }
 
-  async delete(item: TaskGroupModel): Promise<TaskGroupModel> {
+  async delete(params: { taskGroupId: number; userId: number }): Promise<number> {
     // 外部キー制約のため、先にタスクを削除する
     await db.task.deleteMany({
       where: {
-        taskGroupId: item.props.id,
+        taskGroupId: params.taskGroupId,
       },
     });
 
     await db.taskGroup.delete({
       where: {
-        id: item.props.id,
+        id: params.taskGroupId,
       },
     });
 
-    return item;
+    return params.taskGroupId;
   }
 }

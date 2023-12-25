@@ -27,7 +27,10 @@ export class TaskController {
     dueTime?: string;
   }) {
     const getTaskGroup = new GetTaskGroup(this.taskGroupRepository);
-    const taskGroup = await getTaskGroup.execute(params.taskGroupId, params.userId);
+    const taskGroup = await getTaskGroup.execute({
+      id: params.taskGroupId,
+      userId: params.userId,
+    });
 
     if (!taskGroup) {
       return 0;
@@ -58,7 +61,10 @@ export class TaskController {
     done?: boolean;
   }) {
     const getTask = new GetTask(this.taskRepository);
-    const task = await getTask.execute(params.id, params.userId);
+    const task = await getTask.execute({
+      id: params.id,
+      userId: params.userId,
+    });
 
     if (!task) {
       return 0;
@@ -86,10 +92,13 @@ export class TaskController {
     done?: boolean;
   }) {
     const getTask = new GetTask(this.taskRepository);
-    const task = await getTask.execute(params.id, params.userId);
+    const task = await getTask.execute({
+      id: params.id,
+      userId: params.userId,
+    });
 
     if (!task) {
-      throw new Error('Not Fount Task');
+      throw new Error('Not Found Task');
     }
 
     const updateTask = new UpdateTask(this.taskRepository);
@@ -108,16 +117,22 @@ export class TaskController {
     userId: number;
   }) {
     const getTask = new GetTask(this.taskRepository);
-    const task = await getTask.execute(params.id, params.userId);
+    const task = await getTask.execute({
+      id: params.id,
+      userId: params.userId,
+    });
 
     if (!task) {
-      throw new Error('Not Fount Task');
+      throw new Error('Not Found Task');
     }
 
     const deleteTask = new DeleteTask(this.taskRepository);
-    const item = await deleteTask.execute(task);
+    await deleteTask.execute({
+      userId: params.userId,
+      taskGroupId: params.id,
+    });
 
-    return item.props.id;
+    return params.id;
   }
 
   async deleteDoneTasks(params: {
@@ -125,7 +140,10 @@ export class TaskController {
     taskGroupId?: number;
   }) {
     const deleteDoneTasks = new DeleteDoneTasks(this.taskRepository);
-    const count = await deleteDoneTasks.execute(params.userId, params.taskGroupId);
+    const count = await deleteDoneTasks.execute({
+      userId: params.userId,
+      taskGroupId: params.taskGroupId,
+    });
 
     return count;
   }

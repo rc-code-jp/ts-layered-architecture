@@ -5,15 +5,6 @@ export class UpdateTask {
   constructor(private repository: ITaskRepository) {}
 
   execute(params: TaskModel) {
-    const model = new TaskModel({
-      taskGroupId: params.props.taskGroupId,
-      title: params.props.title,
-      done: params.props.done,
-      dueDate: params.props.dueDate,
-      dueTime: params.props.dueTime,
-      description: params.props.description,
-      sort: 0,
-    });
-    return this.repository.save(model);
+    return this.repository.save({ item: params });
   }
 }
