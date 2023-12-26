@@ -1,6 +1,7 @@
 import { IRefreshTokenRepository } from '@/application/repositories/IRefreshTokenRepository';
 import { IUserRepository } from '@/application/repositories/IUserRepository';
 import { CreateUser } from '@/application/usecases/user/CreateUser';
+import { GetUser } from '@/application/usecases/user/GetUser';
 import { RefreshTokenRepository } from '../database/RefreshTokenRepository';
 import { UserRepository } from '../database/UserRepository';
 
@@ -31,18 +32,19 @@ export class AuthController {
     };
   }
 
-  // async signIn(params: {
-  //   email: string;
-  //   password: string;
-  // }) {
-  //   const signIn = new SignIn(this.authRepository);
-  //   const item = await signIn.execute({
-  //     props: {
-  //       email: params.email,
-  //       password: params.password,
-  //     },
-  //   });
+  async signIn(params: {
+    email: string;
+    password: string;
+  }) {
+    const getUser = new GetUser(this.userRepository, this.refreshTokenRepository);
+    const res = await getUser.execute({
+      email: params.email,
+      password: params.password,
+    });
 
-  //   return item.props.id;
-  // }
+    return {
+      accessToken: res.accessToken,
+      refreshToken: res.refreshToken,
+    };
+  }
 }

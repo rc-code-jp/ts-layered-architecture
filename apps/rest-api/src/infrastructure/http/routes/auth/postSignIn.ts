@@ -1,21 +1,20 @@
 import { jsonResponse } from '@/infrastructure/http/responses';
 import { AuthController } from '@/interfaces/controllers/AuthController';
 import { createFactory } from 'hono/factory';
-import { postSignUpValidation } from '../../validators/users';
+import { postSignInValidation } from '../../validators/users';
 
 const factory = createFactory();
 
 /**
- * サインアップ
+ * サインイン
  */
-export const postSignUp = factory.createHandlers(postSignUpValidation, async (c) => {
+export const postSignIn = factory.createHandlers(postSignInValidation, async (c) => {
   const body = c.req.valid('json');
 
   const authController = new AuthController();
-  const res = await authController.signUp({
+  const res = await authController.signIn({
     email: body.email,
     password: body.password,
-    name: body.name,
   });
 
   return jsonResponse(

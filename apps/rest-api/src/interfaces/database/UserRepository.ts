@@ -14,6 +14,7 @@ export class UserRepository implements IUserRepository {
       id: item.id,
       email: item.email,
       name: item.name,
+      password: item.password,
     });
     return model;
   }
@@ -35,6 +36,7 @@ export class UserRepository implements IUserRepository {
       id: item.id,
       email: item.email,
       name: item.name,
+      password: item.password,
     });
   }
 }

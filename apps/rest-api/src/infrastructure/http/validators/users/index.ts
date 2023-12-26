@@ -21,3 +21,19 @@ export const postSignUpValidation = factory.createMiddleware(
     },
   ),
 );
+
+export const postSignInValidation = factory.createMiddleware(
+  zValidator(
+    'json',
+    z.object({
+      email: z.string().email(),
+      password: z.string(),
+    }),
+    (result) => {
+      if (!result.success) {
+        const errors = parseValidationError(result.error.issues);
+        return invalidResponse(errors);
+      }
+    },
+  ),
+);
