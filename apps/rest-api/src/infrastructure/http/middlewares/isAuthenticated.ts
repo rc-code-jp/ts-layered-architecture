@@ -17,7 +17,6 @@ export const isAuthenticated = factory.createMiddleware(async (c, next) => {
   try {
     const token = authorization.split(' ')[1];
     const payload = verifyToken(token);
-    console.dir(payload);
     c.set('userId', payload.userId);
     await next();
   } catch (err) {
