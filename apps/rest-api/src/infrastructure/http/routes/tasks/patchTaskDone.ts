@@ -1,4 +1,4 @@
-import { jsonResponse, notFoundResponse } from '@/infrastructure/http/responses';
+import { jsonResponse, notFoundResponse } from '@/infrastructure/http/utils/responses';
 import { patchDoneValidation } from '@/infrastructure/http/validators/tasks';
 import { TaskController } from '@/interfaces/controllers/TaskController';
 import { createFactory } from 'hono/factory';

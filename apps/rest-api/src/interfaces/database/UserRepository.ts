@@ -5,8 +5,23 @@ import { hashPassword } from '@/utils/auth/password';
 
 export class UserRepository implements IUserRepository {
   async findByEmail(params: { email: string }): Promise<UserModel | null> {
-    const item = await db.user.findFirst({
+    const item = await db.user.findUnique({
       where: { email: params.email },
+    });
+    if (!item) return null;
+
+    const model = new UserModel({
+      id: item.id,
+      email: item.email,
+      name: item.name,
+      password: item.password,
+    });
+    return model;
+  }
+
+  async findById(params: { id: number }): Promise<UserModel | null> {
+    const item = await db.user.findUnique({
+      where: { id: params.id },
     });
     if (!item) return null;
 

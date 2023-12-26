@@ -1,4 +1,4 @@
-import { invalidResponse } from '@/infrastructure/http/responses';
+import { invalidResponse } from '@/infrastructure/http/utils/responses';
 import { parseValidationError, z } from '@/infrastructure/http/validators/zod';
 import { zValidator } from '@hono/zod-validator';
 import { createFactory } from 'hono/factory';
@@ -13,6 +13,7 @@ const timeRegex = /^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;
 
 // POST・PATCH 共通のバリデーション
 const saveParams = {
+  taskGroupId: z.number().int(),
   title: z.string().max(200),
   dueDate: z.string().regex(dateRegex).optional(), // YYYY-MM-DD
   dueTime: z.string().regex(timeRegex).optional(), // HH:MM:SS
@@ -24,8 +25,6 @@ export const postValidation = factory.createMiddleware(
     'json',
     z.object({
       ...saveParams,
-      id: z.number().int(),
-      taskGroupId: z.number().int(),
     }),
     (result) => {
       if (!result.success) {
@@ -41,6 +40,7 @@ export const patchValidation = factory.createMiddleware(
     'json',
     z.object({
       ...saveParams,
+      id: z.number().int(),
     }),
     (result) => {
       if (!result.success) {

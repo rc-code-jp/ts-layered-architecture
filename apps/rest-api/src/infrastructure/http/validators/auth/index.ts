@@ -1,4 +1,4 @@
-import { invalidResponse } from '@/infrastructure/http/responses';
+import { invalidResponse } from '@/infrastructure/http/utils/responses';
 import { parseValidationError, z } from '@/infrastructure/http/validators/zod';
 import { zValidator } from '@hono/zod-validator';
 import { createFactory } from 'hono/factory';
@@ -28,6 +28,21 @@ export const postSignInValidation = factory.createMiddleware(
     z.object({
       email: z.string().email(),
       password: z.string(),
+    }),
+    (result) => {
+      if (!result.success) {
+        const errors = parseValidationError(result.error.issues);
+        return invalidResponse(errors);
+      }
+    },
+  ),
+);
+
+export const refreshTokenValidation = factory.createMiddleware(
+  zValidator(
+    'json',
+    z.object({
+      refreshToken: z.string(),
     }),
     (result) => {
       if (!result.success) {

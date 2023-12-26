@@ -1,7 +1,7 @@
-import { jsonResponse } from '@/infrastructure/http/responses';
 import { authRoute } from '@/infrastructure/http/routes/auth';
 import { taskGroupsRoute } from '@/infrastructure/http/routes/taskGroups';
 import { tasksRoute } from '@/infrastructure/http/routes/tasks';
+import { jsonResponse } from '@/infrastructure/http/utils/responses';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { logger } from 'hono/logger';
@@ -20,7 +20,6 @@ app.get('/hc', (_c) => jsonResponse(''));
 
 // ログ
 app.use('*', async (c, next) => {
-  c.set('userId', 1);
   await next();
 });
 

@@ -1,20 +1,19 @@
 import { jsonResponse } from '@/infrastructure/http/utils/responses';
 import { AuthController } from '@/interfaces/controllers/AuthController';
 import { createFactory } from 'hono/factory';
-import { postSignInValidation } from '../../validators/auth';
+import { postSignUpValidation, refreshTokenValidation } from '../../validators/auth';
 
 const factory = createFactory();
 
 /**
- * サインイン
+ * トークンをリフレッシュする
  */
-export const postSignIn = factory.createHandlers(postSignInValidation, async (c) => {
+export const postRefreshToken = factory.createHandlers(refreshTokenValidation, async (c) => {
   const body = c.req.valid('json');
 
   const authController = new AuthController();
-  const res = await authController.signIn({
-    email: body.email,
-    password: body.password,
+  const res = await authController.refreshToken({
+    refreshToken: body.refreshToken,
   });
 
   return jsonResponse(

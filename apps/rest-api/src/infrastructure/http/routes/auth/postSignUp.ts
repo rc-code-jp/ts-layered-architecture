@@ -1,7 +1,7 @@
-import { jsonResponse } from '@/infrastructure/http/responses';
+import { jsonResponse } from '@/infrastructure/http/utils/responses';
 import { AuthController } from '@/interfaces/controllers/AuthController';
 import { createFactory } from 'hono/factory';
-import { postSignUpValidation } from '../../validators/users';
+import { postSignUpValidation } from '../../validators/auth';
 
 const factory = createFactory();
 

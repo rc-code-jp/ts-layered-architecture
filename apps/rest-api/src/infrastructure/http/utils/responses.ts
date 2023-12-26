@@ -1,5 +1,3 @@
-import type { ZodIssue } from 'zod';
-
 /**
  * Create a 200 response object
  * @param result BodyInit
@@ -8,6 +6,20 @@ import type { ZodIssue } from 'zod';
 export const jsonResponse = (result: BodyInit, status = 200) => {
   return new Response(result, {
     status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+/**
+ * Create a 401 response object
+ * @param message string
+ * @returns Response
+ */
+export const unauthorizedResponse = (message = 'Unauthorized') => {
+  return new Response(JSON.stringify([message]), {
+    status: 401,
     headers: {
       'Content-Type': 'application/json',
     },

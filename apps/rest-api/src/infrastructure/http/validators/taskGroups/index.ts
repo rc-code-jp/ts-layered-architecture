@@ -1,4 +1,4 @@
-import { invalidResponse } from '@/infrastructure/http/responses';
+import { invalidResponse } from '@/infrastructure/http/utils/responses';
 import { parseValidationError, z } from '@/infrastructure/http/validators/zod';
 import { zValidator } from '@hono/zod-validator';
 import { createFactory } from 'hono/factory';
@@ -21,8 +21,6 @@ export const postValidation = factory.createMiddleware(
     'json',
     z.object({
       ...saveParams,
-      id: z.number().int(),
-      taskGroupId: z.number().int(),
     }),
     (result) => {
       if (!result.success) {
@@ -38,6 +36,7 @@ export const patchValidation = factory.createMiddleware(
     'json',
     z.object({
       ...saveParams,
+      id: z.number().int(),
     }),
     (result) => {
       if (!result.success) {

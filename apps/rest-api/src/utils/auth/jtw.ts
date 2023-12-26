@@ -34,3 +34,7 @@ export function generateTokens(userId: number, jti: string) {
     refreshToken,
   };
 }
+
+export function verifyToken(token: string) {
+  return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+}

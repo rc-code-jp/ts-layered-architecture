@@ -1,7 +1,9 @@
 import { IRefreshTokenRepository } from '@/application/repositories/IRefreshTokenRepository';
 import { IUserRepository } from '@/application/repositories/IUserRepository';
-import { CreateUser } from '@/application/usecases/user/CreateUser';
-import { GetUser } from '@/application/usecases/user/GetUser';
+import { CreateUser } from '@/application/usecases/auth/CreateUser';
+import { GetUser } from '@/application/usecases/auth/GetUser';
+import { RefreshToken } from '@/application/usecases/auth/RefreshToken';
+import { RevokeTokens } from '@/application/usecases/auth/RevokeTokens';
 import { RefreshTokenRepository } from '../database/RefreshTokenRepository';
 import { UserRepository } from '../database/UserRepository';
 
@@ -45,6 +47,33 @@ export class AuthController {
     return {
       accessToken: res.accessToken,
       refreshToken: res.refreshToken,
+    };
+  }
+
+  async refreshToken(params: {
+    refreshToken: string;
+  }) {
+    const refreshToken = new RefreshToken(this.userRepository, this.refreshTokenRepository);
+    const res = await refreshToken.execute({
+      refreshToken: params.refreshToken,
+    });
+
+    return {
+      accessToken: res.accessToken,
+      refreshToken: res.refreshToken,
+    };
+  }
+
+  async revokeTokens(params: {
+    userId: number;
+  }) {
+    const revokeTokens = new RevokeTokens(this.refreshTokenRepository);
+    const res = await revokeTokens.execute({
+      userId: params.userId,
+    });
+
+    return {
+      count: res.count,
     };
   }
 }

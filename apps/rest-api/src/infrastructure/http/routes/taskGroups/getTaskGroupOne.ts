@@ -1,4 +1,4 @@
-import { jsonResponse, notFoundResponse } from '@/infrastructure/http/responses';
+import { jsonResponse, notFoundResponse } from '@/infrastructure/http/utils/responses';
 import { TaskGroupController } from '@/interfaces/controllers/TaskGroupController';
 
 import { createFactory } from 'hono/factory';
