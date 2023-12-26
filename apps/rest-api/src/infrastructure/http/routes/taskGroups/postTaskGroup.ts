@@ -8,7 +8,7 @@ const factory = createFactory();
 /**
  * タスクグループ作成
  */
-const handlers = factory.createHandlers(postValidation, async (c) => {
+export const postTaskGroup = factory.createHandlers(postValidation, async (c) => {
   const body = c.req.valid('json');
   const userId = c.get('userId');
 
@@ -24,5 +24,3 @@ const handlers = factory.createHandlers(postValidation, async (c) => {
     }),
   );
 });
-
-export const postTaskGroup = handlers;

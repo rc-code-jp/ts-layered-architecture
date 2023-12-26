@@ -7,7 +7,7 @@ const factory = createFactory();
 /**
  * タスクグループを削除する
  */
-const handlers = factory.createHandlers(async (c) => {
+export const deleteTaskGroup = factory.createHandlers(async (c) => {
   const { taskGroupId } = c.req.param();
 
   const userId = c.get('userId');
@@ -24,5 +24,3 @@ const handlers = factory.createHandlers(async (c) => {
     }),
   );
 });
-
-export const deleteTaskGroup = handlers;

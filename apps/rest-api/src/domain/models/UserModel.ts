@@ -1,7 +1,7 @@
 export class UserModel {
   constructor(
     readonly props: {
-      id?: number;
+      id: number;
       email: string;
       password?: string;
       name: string;

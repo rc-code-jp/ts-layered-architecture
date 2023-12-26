@@ -7,7 +7,7 @@ const factory = createFactory();
 /**
  * タスクグループ一覧取得
  */
-const handlers = factory.createHandlers(async (c) => {
+export const getTaskGroupList = factory.createHandlers(async (c) => {
   const userId = c.get('userId');
 
   const taskGroupController = new TaskGroupController();
@@ -21,5 +21,3 @@ const handlers = factory.createHandlers(async (c) => {
     }),
   );
 });
-
-export const getTaskGroupList = handlers;

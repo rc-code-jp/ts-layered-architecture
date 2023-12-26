@@ -8,7 +8,7 @@ const factory = createFactory();
 /**
  * タスク作成
  */
-const handlers = factory.createHandlers(postValidation, async (c) => {
+export const postTask = factory.createHandlers(postValidation, async (c) => {
   const body = c.req.valid('json');
   const userId = c.get('userId');
 
@@ -28,5 +28,3 @@ const handlers = factory.createHandlers(postValidation, async (c) => {
     }),
   );
 });
-
-export const postTask = handlers;

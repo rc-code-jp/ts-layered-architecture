@@ -8,7 +8,7 @@ const factory = createFactory();
 /**
  * タスクの完了状態を変更
  */
-const handlers = factory.createHandlers(patchDoneValidation, async (c) => {
+export const patchTaskDone = factory.createHandlers(patchDoneValidation, async (c) => {
   const { taskId } = c.req.param();
   const body = c.req.valid('json');
   const userId = c.get('userId');
@@ -28,5 +28,3 @@ const handlers = factory.createHandlers(patchDoneValidation, async (c) => {
     }),
   );
 });
-
-export const patchTaskDone = handlers;

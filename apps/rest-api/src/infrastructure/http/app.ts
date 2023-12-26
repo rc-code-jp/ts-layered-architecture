@@ -1,4 +1,5 @@
 import { jsonResponse } from '@/infrastructure/http/responses';
+import { authRoute } from '@/infrastructure/http/routes/auth';
 import { taskGroupsRoute } from '@/infrastructure/http/routes/taskGroups';
 import { tasksRoute } from '@/infrastructure/http/routes/tasks';
 import { Hono } from 'hono';
@@ -23,6 +24,7 @@ app.use('*', async (c, next) => {
   await next();
 });
 
+app.route('/auth', authRoute);
 app.route('/task-groups', taskGroupsRoute);
 app.route('/tasks', tasksRoute);
 

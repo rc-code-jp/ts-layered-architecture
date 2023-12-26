@@ -8,7 +8,7 @@ const factory = createFactory();
 /**
  * タスクグループ更新
  */
-const handlers = factory.createHandlers(patchValidation, async (c) => {
+export const patchTaskGroup = factory.createHandlers(patchValidation, async (c) => {
   const { taskGroupId } = c.req.param();
   const body = c.req.valid('json');
   const userId = c.get('userId');
@@ -26,5 +26,3 @@ const handlers = factory.createHandlers(patchValidation, async (c) => {
     }),
   );
 });
-
-export const patchTaskGroup = handlers;
