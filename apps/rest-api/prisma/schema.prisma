@@ -12,36 +12,50 @@ datasource db {
 
 // ユーザー
 model User {
-  id          Int          @id @default(autoincrement())
-  email       String       @unique
-  name        String
-  taskGroups  TaskGroup[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String
+  password      String
+  taskGroups    TaskGroup[]
+  refreshTokens RefreshToken[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+}
+
+// トークン
+model RefreshToken {
+  id          Int      @id @default(autoincrement())
+  uuid        String   @unique
+  hashedToken String
+  userId      Int
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 }
 
 // タスク
 model TaskGroup {
-  id         Int     @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String
   sort       Int
-  user       User    @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
   userId     Int
   tasks      Task[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now()) @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 }
 
 // タスク
 model Task {
-  id           Int        @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   title        String
   description  String?
-  dueDate      String?    // DateTime   @db.Date
-  dueTime      String?    // DateTime   @db.Time
-  done         Boolean    @default(false)
+  dueDate      String?   // DateTime   @db.Date
+  dueTime      String?   // DateTime   @db.Time
+  done         Boolean   @default(false)
   sort         Int
-  taskGroup    TaskGroup  @relation(fields: [taskGroupId], references: [id])
+  taskGroup    TaskGroup @relation(fields: [taskGroupId], references: [id])
   taskGroupId  Int
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now()) @updatedAt

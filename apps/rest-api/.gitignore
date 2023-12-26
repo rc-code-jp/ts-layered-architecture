@@ -22,7 +22,7 @@ experimental/**/*.db
 .next
 .vscode/
 .nuxt
-dev.db
+*.db
 *.db-journal
 *.env*
 !env/*
