@@ -50,23 +50,23 @@ export class TaskGroupRepository implements ITaskGroupRepository {
   async save(params: { item: TaskGroupModel }): Promise<TaskGroupModel> {
     const item = params.item;
 
-    if (item.props.id) {
+    if (item.id) {
       await db.taskGroup.update({
-        where: { id: item.props.id },
+        where: { id: item.id },
         data: {
-          name: item.props.name,
-          sort: item.props.sort,
+          name: item.name,
+          sort: item.sort,
         },
       });
     } else {
       const res = await db.taskGroup.create({
         data: {
-          userId: item.props.userId,
-          name: item.props.name,
-          sort: item.props.sort,
+          userId: item.userId,
+          name: item.name,
+          sort: item.sort,
         },
       });
-      item.props.id = res.id;
+      item.id = res.id;
     }
     return item;
   }
@@ -75,13 +75,13 @@ export class TaskGroupRepository implements ITaskGroupRepository {
     // 外部キー制約のため、先にタスクを削除する
     await db.task.deleteMany({
       where: {
-        taskGroupId: params.item.props.id,
+        taskGroupId: params.item.id,
       },
     });
 
     const item = await db.taskGroup.delete({
       where: {
-        id: params.item.props.id,
+        id: params.item.id,
       },
     });
 

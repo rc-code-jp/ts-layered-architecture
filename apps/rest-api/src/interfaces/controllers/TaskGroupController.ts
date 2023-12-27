@@ -48,7 +48,7 @@ export class TaskGroupController {
       },
     });
 
-    return item.props.id;
+    return item.id;
   }
 
   async updateTaskGroup(params: {
@@ -63,7 +63,7 @@ export class TaskGroupController {
       name: params.name,
     });
 
-    return item.props.id;
+    return item.id;
   }
 
   async deleteTaskGroup(params: {

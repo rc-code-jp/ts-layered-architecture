@@ -25,31 +25,31 @@ export class TaskRepository implements ITaskRepository {
   async save(params: { item: TaskModel }): Promise<TaskModel> {
     const item = params.item;
 
-    if (item.props.id) {
+    if (item.id) {
       await db.task.update({
-        where: { id: item.props.id },
+        where: { id: item.id },
         data: {
-          title: item.props.title,
-          description: item.props.description,
-          dueDate: item.props.dueDate,
-          dueTime: item.props.dueTime,
-          done: item.props.done,
-          sort: item.props.sort,
+          title: item.title,
+          description: item.description,
+          dueDate: item.dueDate,
+          dueTime: item.dueTime,
+          done: item.done,
+          sort: item.sort,
         },
       });
     } else {
       const res = await db.task.create({
         data: {
-          title: item.props.title,
-          taskGroupId: item.props.taskGroupId,
-          description: item.props.description,
-          dueDate: item.props.dueDate,
-          dueTime: item.props.dueTime,
-          done: item.props.done,
-          sort: item.props.sort,
+          title: item.title,
+          taskGroupId: item.taskGroupId,
+          description: item.description,
+          dueDate: item.dueDate,
+          dueTime: item.dueTime,
+          done: item.done,
+          sort: item.sort,
         },
       });
-      item.props.id = res.id;
+      item.id = res.id;
     }
 
     return item;
@@ -58,7 +58,7 @@ export class TaskRepository implements ITaskRepository {
   async delete(params: { item: TaskModel }): Promise<number> {
     const item = await db.task.delete({
       where: {
-        id: params.item.props.id,
+        id: params.item.id,
       },
     });
 

@@ -23,12 +23,12 @@ export class CreateUser {
     });
 
     const uuid = await generateUUID();
-    const { accessToken, refreshToken } = generateTokens(user.props.id, uuid);
+    const { accessToken, refreshToken } = generateTokens(user.id, uuid);
 
     await this.refreshTokenRepository.create({
       uuid: uuid,
       refreshToken: params.password,
-      userId: user.props.id,
+      userId: user.id,
     });
 
     return {

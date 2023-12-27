@@ -6,8 +6,8 @@ export class CreateTaskGroup {
 
   execute(params: TaskGroupModel) {
     const model = new TaskGroupModel({
-      name: params.props.name,
-      userId: params.props.userId,
+      name: params.name,
+      userId: params.userId,
       sort: 0,
     });
     return this.repository.save({ item: model });

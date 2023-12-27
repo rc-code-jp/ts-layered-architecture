@@ -15,17 +15,17 @@ export class RefreshToken {
     const payload = verifyToken(params.refreshToken);
     const savedRefreshToken = await this.refreshTokenRepository.findByUuid(payload.jti);
 
-    if (!savedRefreshToken || savedRefreshToken.props.revoked) {
+    if (!savedRefreshToken || savedRefreshToken.revoked) {
       throw new Error('Unauthorized');
     }
 
     const hashedToken = hashToken(params.refreshToken);
-    if (hashedToken !== savedRefreshToken.props.hashedToken) {
+    if (hashedToken !== savedRefreshToken.hashedToken) {
       throw new Error('Unauthorized');
     }
 
     const user = await this.repository.findById({
-      id: savedRefreshToken.props.userId,
+      id: savedRefreshToken.userId,
     });
 
     if (!user) {
@@ -33,16 +33,16 @@ export class RefreshToken {
     }
 
     await this.refreshTokenRepository.delete({
-      uuid: savedRefreshToken.props.uuid,
+      uuid: savedRefreshToken.uuid,
     });
 
     const uuid = generateUUID();
-    const { accessToken, refreshToken } = generateTokens(user.props.id, uuid);
+    const { accessToken, refreshToken } = generateTokens(user.id, uuid);
 
     await this.refreshTokenRepository.create({
       uuid: uuid,
       refreshToken: refreshToken,
-      userId: user.props.id,
+      userId: user.id,
     });
 
     return {

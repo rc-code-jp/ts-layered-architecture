@@ -47,7 +47,7 @@ export class TaskController {
       },
     });
 
-    return item.props.id;
+    return item.id;
   }
 
   async updateTask(params: {
@@ -71,7 +71,7 @@ export class TaskController {
       sort: 0,
     });
 
-    return item.props.id;
+    return item.id;
   }
 
   async updateTaskDone(params: {
@@ -86,7 +86,7 @@ export class TaskController {
       done: params.done,
     });
 
-    return item.props.id;
+    return item.id;
   }
 
   async deleteTask(params: {

@@ -16,18 +16,18 @@ export class GetUser {
       throw new Error('Email not found');
     }
 
-    const validPassword = await comparePassword(params.password, existsUser.props.password);
+    const validPassword = await comparePassword(params.password, existsUser.password);
     if (!validPassword) {
       throw new Error('Password is invalid');
     }
 
     const uuid = await generateUUID();
-    const { accessToken, refreshToken } = generateTokens(existsUser.props.id, uuid);
+    const { accessToken, refreshToken } = generateTokens(existsUser.id, uuid);
 
     await this.refreshTokenRepository.create({
       uuid: uuid,
       refreshToken: params.password,
-      userId: existsUser.props.id,
+      userId: existsUser.id,
     });
 
     return {
