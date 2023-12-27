@@ -1,4 +1,6 @@
-export class TaskModel {
+import { BaseModel } from './BaseModel';
+
+export class TaskModel extends BaseModel {
   readonly id?: number;
   readonly taskGroupId: number;
   readonly title: string;
@@ -18,6 +20,7 @@ export class TaskModel {
     dueTime?: string;
     sort: number;
   }) {
+    super();
     this.id = props.id;
     this.taskGroupId = props.taskGroupId;
     this.title = props.title;

@@ -1,4 +1,6 @@
-export class UserModel {
+import { BaseModel } from './BaseModel';
+
+export class UserModel extends BaseModel {
   readonly id: number;
   readonly email: string;
   readonly password: string;
@@ -10,6 +12,7 @@ export class UserModel {
     password: string;
     name: string;
   }) {
+    super();
     this.id = props.id;
     this.email = props.email;
     this.password = props.password;

@@ -1,4 +1,6 @@
-export class RefreshTokenModel {
+import { BaseModel } from './BaseModel';
+
+export class RefreshTokenModel extends BaseModel {
   readonly id?: number;
   readonly uuid: string;
   readonly hashedToken: string;
@@ -12,6 +14,7 @@ export class RefreshTokenModel {
     userId: number;
     revoked: boolean;
   }) {
+    super();
     this.id = props.id;
     this.uuid = props.uuid;
     this.hashedToken = props.hashedToken;
