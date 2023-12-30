@@ -19,6 +19,7 @@
   },
   "scripts": {
     "@rest": "pnpm -F @ts-layered-architecture/rest-api",
+    "@frontend": "pnpm -F @ts-layered-architecture/frontend",
     "dev": "turbo dev",
     "build": "turbo build",
     "format": "turbo format",
