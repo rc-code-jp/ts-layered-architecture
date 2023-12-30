@@ -1,4 +1,4 @@
-import { jsonResponse } from '@/infrastructure/http/utils/responses';
+import { successResponse } from '@/infrastructure/http/utils/responses';
 import { TaskGroupController } from '@/interfaces/controllers/TaskGroupController';
 import { createFactory } from 'hono/factory';
 
@@ -15,7 +15,7 @@ export const getTaskGroupList = factory.createHandlers(async (c) => {
     userId,
   });
 
-  return jsonResponse(
+  return successResponse(
     JSON.stringify({
       list: list,
     }),

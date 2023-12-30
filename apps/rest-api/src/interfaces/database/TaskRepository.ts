@@ -37,22 +37,32 @@ export class TaskRepository implements ITaskRepository {
           sort: item.sort,
         },
       });
-    } else {
-      const res = await db.task.create({
-        data: {
-          title: item.title,
-          taskGroupId: item.taskGroupId,
-          description: item.description,
-          dueDate: item.dueDate,
-          dueTime: item.dueTime,
-          done: item.done,
-          sort: item.sort,
-        },
-      });
-      item.id = res.id;
+      return item;
     }
 
-    return item;
+    // 新規
+    const res = await db.task.create({
+      data: {
+        title: item.title,
+        taskGroupId: item.taskGroupId,
+        description: item.description,
+        dueDate: item.dueDate,
+        dueTime: item.dueTime,
+        done: item.done,
+        sort: item.sort,
+      },
+    });
+    const newItem = new TaskModel({
+      id: res.id,
+      taskGroupId: res.taskGroupId,
+      title: res.title,
+      description: res.description ?? undefined,
+      dueDate: res.dueDate ?? undefined,
+      dueTime: res.dueTime ?? undefined,
+      done: res.done,
+      sort: res.sort,
+    });
+    return newItem;
   }
 
   async delete(params: { item: TaskModel }): Promise<number> {

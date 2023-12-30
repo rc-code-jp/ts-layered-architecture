@@ -1,4 +1,4 @@
-import { jsonResponse } from '@/infrastructure/http/utils/responses';
+import { successResponse } from '@/infrastructure/http/utils/responses';
 import { TaskController } from '@/interfaces/controllers/TaskController';
 import { createFactory } from 'hono/factory';
 
@@ -17,7 +17,7 @@ export const deleteTask = factory.createHandlers(async (c) => {
     userId: userId,
   });
 
-  return jsonResponse(
+  return successResponse(
     JSON.stringify({
       id: res,
     }),

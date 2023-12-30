@@ -1,4 +1,4 @@
-import { jsonResponse } from '@/infrastructure/http/utils/responses';
+import { successResponse } from '@/infrastructure/http/utils/responses';
 import { patchValidation } from '@/infrastructure/http/validators/taskGroups';
 import { TaskGroupController } from '@/interfaces/controllers/TaskGroupController';
 import { createFactory } from 'hono/factory';
@@ -20,7 +20,7 @@ export const patchTaskGroup = factory.createHandlers(patchValidation, async (c) 
     name: body.name,
   });
 
-  return jsonResponse(
+  return successResponse(
     JSON.stringify({
       id: res,
     }),

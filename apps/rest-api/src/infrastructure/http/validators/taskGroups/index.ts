@@ -5,12 +5,6 @@ import { createFactory } from 'hono/factory';
 
 const factory = createFactory();
 
-// YYYY-MM-DD
-const dateRegex = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-
-// HH:MM:SS
-const timeRegex = /^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;
-
 // POST・PATCH 共通のバリデーション
 const saveParams = {
   name: z.string().max(50),

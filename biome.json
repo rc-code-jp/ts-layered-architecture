@@ -22,6 +22,9 @@
       "a11y": {
         "useKeyWithClickEvents": "off",
         "useKeyWithMouseEvents": "off"
+      },
+      "correctness": {
+        "noUnusedVariables": "error"
       }
     }
   },

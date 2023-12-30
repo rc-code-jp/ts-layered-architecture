@@ -1,7 +1,7 @@
 import { authRoute } from '@/infrastructure/http/routes/auth';
 import { taskGroupsRoute } from '@/infrastructure/http/routes/taskGroups';
 import { tasksRoute } from '@/infrastructure/http/routes/tasks';
-import { jsonResponse } from '@/infrastructure/http/utils/responses';
+import { successResponse } from '@/infrastructure/http/utils/responses';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { logger } from 'hono/logger';
@@ -16,10 +16,10 @@ const app = new Hono<{
 app.use('*', logger());
 
 // ルート
-app.get('/hc', (_c) => jsonResponse(''));
+app.get('/hc', (_c) => successResponse(''));
 
 // ログ
-app.use('*', async (c, next) => {
+app.use('*', async (_c, next) => {
   await next();
 });
 

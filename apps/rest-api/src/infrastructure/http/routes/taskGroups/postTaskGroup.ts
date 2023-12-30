@@ -1,4 +1,4 @@
-import { jsonResponse } from '@/infrastructure/http/utils/responses';
+import { successResponse } from '@/infrastructure/http/utils/responses';
 import { postValidation } from '@/infrastructure/http/validators/taskGroups';
 import { TaskGroupController } from '@/interfaces/controllers/TaskGroupController';
 import { createFactory } from 'hono/factory';
@@ -18,7 +18,7 @@ export const postTaskGroup = factory.createHandlers(postValidation, async (c) =>
     name: body.name,
   });
 
-  return jsonResponse(
+  return successResponse(
     JSON.stringify({
       id: res,
     }),

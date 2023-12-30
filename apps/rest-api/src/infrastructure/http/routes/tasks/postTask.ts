@@ -1,4 +1,4 @@
-import { jsonResponse } from '@/infrastructure/http/utils/responses';
+import { successResponse } from '@/infrastructure/http/utils/responses';
 import { postValidation } from '@/infrastructure/http/validators/tasks';
 import { TaskController } from '@/interfaces/controllers/TaskController';
 import { createFactory } from 'hono/factory';
@@ -22,7 +22,7 @@ export const postTask = factory.createHandlers(postValidation, async (c) => {
     dueTime: body.dueTime,
   });
 
-  return jsonResponse(
+  return successResponse(
     JSON.stringify({
       id: res,
     }),

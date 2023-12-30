@@ -19,7 +19,7 @@ export const isAuthenticated = factory.createMiddleware(async (c, next) => {
     const payload = verifyToken(token);
     c.set('userId', payload.userId);
     await next();
-  } catch (err) {
+  } catch (_e) {
     return unauthorizedResponse('Unauthorized');
   }
 });

@@ -1,5 +1,4 @@
 import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepository';
-import { TaskGroupModel } from '@/domain/models/TaskGroupModel';
 
 export class UpdateTaskGroup {
   constructor(private repository: ITaskGroupRepository) {}

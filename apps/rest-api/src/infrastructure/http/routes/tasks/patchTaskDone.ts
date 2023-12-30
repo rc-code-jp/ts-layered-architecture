@@ -1,4 +1,4 @@
-import { jsonResponse, notFoundResponse } from '@/infrastructure/http/utils/responses';
+import { notFoundResponse, successResponse } from '@/infrastructure/http/utils/responses';
 import { patchDoneValidation } from '@/infrastructure/http/validators/tasks';
 import { TaskController } from '@/interfaces/controllers/TaskController';
 import { createFactory } from 'hono/factory';
@@ -22,7 +22,7 @@ export const patchTaskDone = factory.createHandlers(patchDoneValidation, async (
 
   if (!res) return notFoundResponse();
 
-  return jsonResponse(
+  return successResponse(
     JSON.stringify({
       id: res,
     }),

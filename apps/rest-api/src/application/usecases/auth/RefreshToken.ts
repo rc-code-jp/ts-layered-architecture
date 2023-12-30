@@ -1,7 +1,6 @@
 import { IRefreshTokenRepository } from '@/application/repositories/IRefreshTokenRepository';
 import { IUserRepository } from '@/application/repositories/IUserRepository';
 import { generateTokens, verifyToken } from '@/utils/auth/jtw';
-import { comparePassword } from '@/utils/auth/password';
 import { hashToken } from '@/utils/auth/token';
 import { generateUUID } from '@/utils/auth/uuid';
 
@@ -13,7 +12,9 @@ export class RefreshToken {
 
   async execute(params: { refreshToken: string }) {
     const payload = verifyToken(params.refreshToken);
-    const savedRefreshToken = await this.refreshTokenRepository.findByUuid(payload.jti);
+    const savedRefreshToken = await this.refreshTokenRepository.findByUuid({
+      uuid: payload.jti ?? '',
+    });
 
     if (!savedRefreshToken || savedRefreshToken.revoked) {
       throw new Error('Unauthorized');

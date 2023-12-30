@@ -1,4 +1,4 @@
-import { jsonResponse } from '@/infrastructure/http/utils/responses';
+import { successResponse } from '@/infrastructure/http/utils/responses';
 import { AuthController } from '@/interfaces/controllers/AuthController';
 import { createFactory } from 'hono/factory';
 import { postSignUpValidation } from '../../validators/auth';
@@ -18,7 +18,7 @@ export const postSignUp = factory.createHandlers(postSignUpValidation, async (c)
     name: body.name,
   });
 
-  return jsonResponse(
+  return successResponse(
     JSON.stringify({
       accessToken: res.accessToken,
       refreshToken: res.refreshToken,

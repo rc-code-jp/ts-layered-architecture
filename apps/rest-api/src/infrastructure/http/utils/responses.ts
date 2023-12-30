@@ -3,7 +3,7 @@
  * @param result BodyInit
  * @returns Response
  */
-export const jsonResponse = (result: BodyInit, status = 200) => {
+export const successResponse = (result: BodyInit) => {
   return new Response(result, {
     status: 200,
     headers: {
