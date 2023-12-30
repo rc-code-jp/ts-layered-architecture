@@ -1,13 +1,13 @@
 import { app } from '@/infrastructure/http/app';
 import { serve } from '@hono/node-server';
 
-const port = 3000;
+const SERVER_PORT = 3000;
 
 // 起動
 serve({
   fetch: app.fetch,
-  port: 3000,
+  port: SERVER_PORT,
 });
 
 // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-console.log(`Server running http://localhost:${port}/`);
+console.log(`Server running http://localhost:${SERVER_PORT}/`);

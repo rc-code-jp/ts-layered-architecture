@@ -42,17 +42,31 @@ export const notFoundResponse = (message = 'Not Found') => {
 
 /**
  * Create a 422 response object
- * @param message string[]
+ * @param messages string[]
  * @returns Response
  */
 export const invalidResponse = (
-  message: Array<{
+  messages: Array<{
     names: Array<string | number>;
     message: string;
   }>,
 ) => {
-  return new Response(JSON.stringify(message), {
+  return new Response(JSON.stringify(messages), {
     status: 422,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+/**
+ * Create a 500 response object
+ * @param message string
+ * @returns Response
+ */
+export const errorResponse = (message = 'Internal server error') => {
+  return new Response(JSON.stringify([message]), {
+    status: 500,
     headers: {
       'Content-Type': 'application/json',
     },

@@ -6,7 +6,6 @@ const runtimeConfig = useRuntimeConfig();
 const form = ref({
   email: '',
   password: '',
-  name: '',
 })
 
 const isLoading = ref(false)
@@ -14,12 +13,11 @@ const isLoading = ref(false)
 const  submit = async () => {
   isLoading.value = true
   try {
-    const res = await $fetch(`${runtimeConfig.public.API_URL}/auth/signup`, {
+    const res = await $fetch(`${runtimeConfig.public.API_URL}/auth/signin`, {
       method: 'POST',
       body: {
         email: form.value.email,
         password: form.value.password,
-        name: form.value.name,
       },
     })
     console.dir(res);
@@ -33,12 +31,8 @@ const  submit = async () => {
 
 <template>
   <div>
-    <h1>Sign up</h1>
+    <h1>Sign in</h1>
     <form @submit.prevent="submit">
-      <div>
-        <label>User name</label>
-        <input type="text" v-model="form.name"/>
-      </div>
       <div>
         <label>Email</label>
         <input type="email" v-model="form.email" />
