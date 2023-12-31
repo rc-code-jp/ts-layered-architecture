@@ -41,11 +41,9 @@ export class TaskGroupController {
   }) {
     const createTaskGroup = new CreateTaskGroup(this.taskGroupRepository);
     const item = await createTaskGroup.execute({
-      props: {
-        name: params.name,
-        userId: params.userId,
-        sort: 0,
-      },
+      name: params.name,
+      userId: params.userId,
+      sort: 0,
     });
 
     return item.id;

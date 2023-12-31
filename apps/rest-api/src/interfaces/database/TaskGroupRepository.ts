@@ -1,5 +1,6 @@
 import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepository';
 import { TaskGroupModel } from '@/domain/models/TaskGroupModel';
+import { TaskModel } from '@/domain/models/TaskModel';
 import { db } from '@/infrastructure/store/database/db';
 
 export class TaskGroupRepository implements ITaskGroupRepository {
@@ -37,11 +38,30 @@ export class TaskGroupRepository implements ITaskGroupRepository {
 
     if (!item) return null;
 
+    const tasks = await db.task.findMany({
+      where: {
+        taskGroupId: item.id,
+      },
+    });
+
     const model = new TaskGroupModel({
       id: item.id,
       userId: item.userId,
       name: item.name,
       sort: item.sort,
+      tasks: tasks.map(
+        (task) =>
+          new TaskModel({
+            id: task.id,
+            taskGroupId: task.taskGroupId,
+            title: task.title,
+            description: task.description ?? undefined,
+            dueDate: task.dueDate ?? undefined,
+            dueTime: task.dueTime ?? undefined,
+            done: task.done,
+            sort: task.sort,
+          }),
+      ),
     });
 
     return model;
@@ -58,17 +78,21 @@ export class TaskGroupRepository implements ITaskGroupRepository {
           sort: item.sort,
         },
       });
-    } else {
-      const res = await db.taskGroup.create({
-        data: {
-          userId: item.userId,
-          name: item.name,
-          sort: item.sort,
-        },
-      });
-      item.id = res.id;
+      return item;
     }
-    return item;
+    const res = await db.taskGroup.create({
+      data: {
+        userId: item.userId,
+        name: item.name,
+        sort: item.sort,
+      },
+    });
+    return new TaskGroupModel({
+      id: res.id,
+      userId: res.userId,
+      name: res.name,
+      sort: res.sort,
+    });
   }
 
   async delete(params: { item: TaskGroupModel }): Promise<number> {

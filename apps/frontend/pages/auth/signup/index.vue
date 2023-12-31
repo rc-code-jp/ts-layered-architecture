@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { setAuthToken } from '~/_auth';
 
+const router = useRouter()
 const runtimeConfig = useRuntimeConfig();
 
 const form = ref({
@@ -14,7 +16,7 @@ const isLoading = ref(false)
 const  submit = async () => {
   isLoading.value = true
   try {
-    const res = await $fetch(`${runtimeConfig.public.API_URL}/auth/signup`, {
+    const res = await $fetch<any>(`${runtimeConfig.public.API_URL}/auth/signup`, {
       method: 'POST',
       body: {
         email: form.value.email,
@@ -22,8 +24,13 @@ const  submit = async () => {
         name: form.value.name,
       },
     })
-    console.dir(res);
-    isLoading.value = false
+    
+    setAuthToken({
+      accessToken: res.accessToken,
+      refreshToken: res.refreshToken,
+    })
+
+    await router.push('/')
   } catch (err) {
     console.error(err)
     isLoading.value = false

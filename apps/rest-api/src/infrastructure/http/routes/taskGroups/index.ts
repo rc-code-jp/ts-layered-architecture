@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
 import { isAuthenticated } from '../../middlewares/isAuthenticated';
 import { deleteTaskGroup } from './deleteTaskGroup';
+import { getTaskGroup } from './getTaskGroup';
 import { getTaskGroupList } from './getTaskGroupList';
-import { getTaskGroupOne } from './getTaskGroupOne';
 import { patchTaskGroup } from './patchTaskGroup';
 import { postTaskGroup } from './postTaskGroup';
 
@@ -12,7 +12,7 @@ app.use('*', isAuthenticated);
 
 app.get('/', ...getTaskGroupList);
 
-app.get('/:taskGroupId', ...getTaskGroupOne);
+app.get('/:taskGroupId', ...getTaskGroup);
 
 app.post('/', ...postTaskGroup);
 

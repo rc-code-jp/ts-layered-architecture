@@ -37,14 +37,12 @@ export class TaskController {
 
     const createTask = new CreateTask(this.taskRepository);
     const item = await createTask.execute({
-      props: {
-        taskGroupId: params.taskGroupId,
-        title: params.title,
-        description: params.description,
-        dueDate: params.dueDate,
-        dueTime: params.dueTime,
-        sort: 0,
-      },
+      taskGroupId: params.taskGroupId,
+      title: params.title,
+      description: params.description,
+      dueDate: params.dueDate,
+      dueTime: params.dueTime,
+      sort: 0,
     });
 
     return item.id;

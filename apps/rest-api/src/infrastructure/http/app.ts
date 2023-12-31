@@ -26,11 +26,6 @@ app.use(
 // ルート
 app.get('/hc', (_c) => successResponse(''));
 
-// ログ
-app.use('*', async (_c, next) => {
-  await next();
-});
-
 app.route('/auth', authRoute);
 app.route('/task-groups', taskGroupsRoute);
 app.route('/tasks', tasksRoute);

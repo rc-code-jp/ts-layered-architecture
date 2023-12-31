@@ -8,7 +8,7 @@ const factory = createFactory();
 /**
  * タスクグループ詳細取得
  */
-export const getTaskGroupOne = factory.createHandlers(async (c) => {
+export const getTaskGroup = factory.createHandlers(async (c) => {
   const { taskGroupId } = c.req.param();
   const userId = c.get('userId');
 

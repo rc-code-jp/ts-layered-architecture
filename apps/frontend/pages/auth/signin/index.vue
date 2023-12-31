@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { setAuthToken } from '~/_auth';
 
+const router = useRouter()
 const runtimeConfig = useRuntimeConfig();
 
 const form = ref({
@@ -13,15 +15,20 @@ const isLoading = ref(false)
 const  submit = async () => {
   isLoading.value = true
   try {
-    const res = await $fetch(`${runtimeConfig.public.API_URL}/auth/signin`, {
+    const res = await $fetch<any>(`${runtimeConfig.public.API_URL}/auth/signin`, {
       method: 'POST',
       body: {
         email: form.value.email,
         password: form.value.password,
       },
     })
-    console.dir(res);
-    isLoading.value = false
+
+    setAuthToken({
+      accessToken: res.accessToken,
+      refreshToken: res.refreshToken,
+    })
+
+    await router.push('/')
   } catch (err) {
     console.error(err)
     isLoading.value = false
@@ -42,7 +49,7 @@ const  submit = async () => {
         <input type="password" v-model="form.password"/>
       </div>
       <div>
-        <button type="submit">Sign up</button>
+        <button type="submit">Sign in</button>
       </div>
     </form>
   </div>
