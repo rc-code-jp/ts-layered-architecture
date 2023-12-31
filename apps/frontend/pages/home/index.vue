@@ -18,7 +18,7 @@ const {$customFetch} = useNuxtApp()
 const selectedTaskGroupId = ref<number | null>(null)
 const selectedTaskGroup = ref<TaskGroup | null>(null)
 
-const {data: taskGroups} = await useAsyncData('a', () => {
+const {data: taskGroups} = await useAsyncData('/task-groups', () => {
   return $customFetch<{
     list: TaskGroup[]
   }>('/task-groups')
@@ -30,7 +30,7 @@ watch(selectedTaskGroupId, async (value) => {
   }
   const data = await $customFetch<{
     item: TaskGroup
-  }>(`/task-groups/${value}`, {
+  }>(`/task-groups/${value}11`, {
     method: 'GET',
   })
   selectedTaskGroup.value = data.item
@@ -42,13 +42,12 @@ const selectTaskGroup = (taskGroup: TaskGroup) => {
 
 const changeDone = async (task: Task) => {
   try {
-    const data = await $customFetch(`/tasks/${task.id}/done`, {
+    await $customFetch(`/tasks/${task.id}/done`, {
       method: 'PATCH',
-      body: JSON.stringify({
+      body: {
         done: task.done,
-      }),
+      },
     })
-  console.dir(data);
   } catch (err) {
     console.dir(err);
   }
@@ -59,8 +58,8 @@ const changeDone = async (task: Task) => {
 <template>
   <div>
     <h1>Tasks</h1>
-    <ul>
-      <li v-for="taskGroup in taskGroups?.list" :key="taskGroup.id">
+    <ul v-if="taskGroups">
+      <li v-for="taskGroup in taskGroups.list" :key="taskGroup.id">
         <a @click.prevent="selectTaskGroup(taskGroup)">{{ taskGroup.name }}</a>
       </li>
     </ul>

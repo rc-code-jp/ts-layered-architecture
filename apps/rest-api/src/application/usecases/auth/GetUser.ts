@@ -2,6 +2,7 @@ import { IRefreshTokenRepository } from '@/application/repositories/IRefreshToke
 import { IUserRepository } from '@/application/repositories/IUserRepository';
 import { generateTokens } from '@/utils/auth/jtw';
 import { comparePassword } from '@/utils/auth/password';
+import { hashToken } from '@/utils/auth/token';
 import { generateUUID } from '@/utils/auth/uuid';
 
 export class GetUser {
@@ -23,10 +24,11 @@ export class GetUser {
 
     const uuid = await generateUUID();
     const { accessToken, refreshToken } = generateTokens(existsUser.id, uuid);
+    const hashedToken = await hashToken(refreshToken);
 
     await this.refreshTokenRepository.create({
       uuid: uuid,
-      refreshToken: params.password,
+      hashedToken: hashedToken,
       userId: existsUser.id,
     });
 

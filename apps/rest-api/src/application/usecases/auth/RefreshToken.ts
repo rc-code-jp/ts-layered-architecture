@@ -39,10 +39,11 @@ export class RefreshToken {
 
     const uuid = generateUUID();
     const { accessToken, refreshToken } = generateTokens(user.id, uuid);
+    const newHashedToken = await hashToken(refreshToken);
 
     await this.refreshTokenRepository.create({
       uuid: uuid,
-      refreshToken: refreshToken,
+      hashedToken: newHashedToken,
       userId: user.id,
     });
 

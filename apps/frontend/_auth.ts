@@ -26,3 +26,11 @@ export const getAuthToken = () => {
     refreshToken,
   };
 };
+
+/**
+ * clearAuthToken
+ */
+export const clearAuthToken = () => {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+};

@@ -3,7 +3,7 @@ import { RefreshTokenModel } from '@/domain/models/RefreshTokenModel';
 export interface IRefreshTokenRepository {
   create(params: {
     uuid: string;
-    refreshToken: string;
+    hashedToken: string;
     userId: number;
   }): Promise<RefreshTokenModel>;
 

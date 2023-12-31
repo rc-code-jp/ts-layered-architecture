@@ -1,19 +1,17 @@
 import { IRefreshTokenRepository } from '@/application/repositories/IRefreshTokenRepository';
 import { RefreshTokenModel } from '@/domain/models/RefreshTokenModel';
 import { db } from '@/infrastructure/store/database/db';
-import { hashToken } from '@/utils/auth/token';
 
 export class RefreshTokenRepository implements IRefreshTokenRepository {
   async create(params: {
     uuid: string;
-    refreshToken: string;
+    hashedToken: string;
     userId: number;
   }): Promise<RefreshTokenModel> {
-    const hashedToken = await hashToken(params.refreshToken);
     const item = await db.refreshToken.create({
       data: {
         uuid: params.uuid,
-        hashedToken: hashedToken,
+        hashedToken: params.hashedToken,
         userId: params.userId,
       },
     });
