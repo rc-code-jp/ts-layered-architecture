@@ -7,7 +7,7 @@ export function generateAccessToken(userId: number) {
     },
     process.env.JWT_ACCESS_SECRET ?? '',
     {
-      expiresIn: '10s',
+      expiresIn: '10m',
     },
   );
 }
