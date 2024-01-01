@@ -15,6 +15,8 @@ type TaskGroup = {
 
 const {$customFetch} = useNuxtApp()
 
+const $inputTaskTitle = ref<HTMLInputElement[]>([])
+
 const {data: taskGroups} = await useAsyncData('/task-groups', () => {
   return $customFetch<{
     list: TaskGroup[]
@@ -46,10 +48,10 @@ const changeDone = async (task: Task) => {
     await $customFetch(`/tasks/${task.id}/done`, {
       method: 'PATCH',
       body: {
-        done: task.done,
+        done: !task.done,
       },
     })
-    task.done = task.done
+    task.done = !task.done
   } catch (err) {
     console.dir(err);
   }
@@ -63,6 +65,55 @@ const deleteTask = async (task: Task) => {
       method: 'DELETE',
     })
     selectedTaskGroup.value?.tasks.splice(selectedTaskGroup.value?.tasks.indexOf(task), 1)
+  } catch (err) {
+    console.dir(err);
+  }
+}
+
+const addTask = () => {
+  selectedTaskGroup.value?.tasks.push({
+    id: 0,
+    title: '',
+    description: '',
+    taskGroupId: selectedTaskGroup.value.id,
+    done: false,
+  })
+
+  // 最後の要素にフォーカス
+  nextTick(() => {
+    $inputTaskTitle.value?.at(-1)?.focus()
+  })
+}
+
+const submitTask = async (task: Task) => {
+  try {
+    if (task.id) {
+      // 更新
+      const data = await $customFetch<{
+        item: Task
+      }>(`/tasks/${task.id}`, {
+        method: 'PATCH',
+        body: {
+          title: task.title,
+          description: task.description,
+          taskGroupId: task.taskGroupId,
+        },
+      })
+      console.dir(data);
+    } else {
+      // 新規
+      const data = await $customFetch<{
+        item: Task
+      }>(`/tasks`, {
+        method: 'POST',
+        body: {
+          title: task.title,
+          description: task.description,
+          taskGroupId: task.taskGroupId,
+        },
+      })
+      console.dir(data);
+    }
   } catch (err) {
     console.dir(err);
   }
@@ -89,18 +140,30 @@ const deleteTask = async (task: Task) => {
 
     <v-list v-if="selectedTaskGroup" lines="three">
       <v-list-item v-for="task in selectedTaskGroup.tasks" :key="task.id" :value="task">
-        
         <template v-slot:prepend>
           <v-list-item-action>
-            <v-checkbox-btn v-model="task.done" @click="changeDone(task)"></v-checkbox-btn>
+            <v-checkbox-btn v-model="task.done" :checked="task.done" @click.prevent="changeDone(task)"></v-checkbox-btn>
           </v-list-item-action>
         </template>
 
-        <v-list-item-title>{{ task.title }}</v-list-item-title>
-        
-        <v-list-item-subtitle>
-          {{ task.description }}
-        </v-list-item-subtitle>
+        <v-form @submit.prevent="submitTask(task)">
+          <v-list-item-title>
+            <input
+              v-model="task.title"
+              ref="$inputTaskTitle"
+              :style="{
+                border: 'none',
+                outline: 'none',
+                background: 'transparent',
+                width: '100%',
+              }"
+              @keyup.enter="submitTask(task)"
+            />
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            {{ task.description }}
+          </v-list-item-subtitle>
+        </v-form>
 
         <template v-slot:append>
           <v-list-item-action>
@@ -118,7 +181,7 @@ const deleteTask = async (task: Task) => {
         right: '1rem',
       }"
       icon="$plus"
-      @click="() => null">
+      @click="addTask">
     </v-btn>
   </div>
 </template>
