@@ -4,6 +4,7 @@ import { deleteTaskGroup } from './deleteTaskGroup';
 import { getTaskGroup } from './getTaskGroup';
 import { getTaskGroupList } from './getTaskGroupList';
 import { patchTaskGroup } from './patchTaskGroup';
+import { patchTaskGroupSort } from './patchTaskGroupSort';
 import { postTaskGroup } from './postTaskGroup';
 
 const app = new Hono();
@@ -17,6 +18,8 @@ app.get('/:taskGroupId', ...getTaskGroup);
 app.post('/', ...postTaskGroup);
 
 app.patch('/:taskGroupId', ...patchTaskGroup);
+
+app.patch('/:taskGroupId/sort', ...patchTaskGroupSort);
 
 app.delete('/:taskGroupId', ...deleteTaskGroup);
 

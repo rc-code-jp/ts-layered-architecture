@@ -21,8 +21,8 @@ export class AuthController {
     password: string;
     name: string;
   }) {
-    const createUser = new CreateUser(this.userRepository, this.refreshTokenRepository);
-    const res = await createUser.execute({
+    const usecase = new CreateUser(this.userRepository, this.refreshTokenRepository);
+    const res = await usecase.execute({
       email: params.email,
       password: params.password,
       name: params.name,
@@ -38,8 +38,8 @@ export class AuthController {
     email: string;
     password: string;
   }) {
-    const getUser = new GetUser(this.userRepository, this.refreshTokenRepository);
-    const res = await getUser.execute({
+    const usecase = new GetUser(this.userRepository, this.refreshTokenRepository);
+    const res = await usecase.execute({
       email: params.email,
       password: params.password,
     });
@@ -53,8 +53,8 @@ export class AuthController {
   async refreshToken(params: {
     refreshToken: string;
   }) {
-    const refreshToken = new RefreshToken(this.userRepository, this.refreshTokenRepository);
-    const res = await refreshToken.execute({
+    const usecase = new RefreshToken(this.userRepository, this.refreshTokenRepository);
+    const res = await usecase.execute({
       refreshToken: params.refreshToken,
     });
 
@@ -67,8 +67,8 @@ export class AuthController {
   async revokeTokens(params: {
     userId: number;
   }) {
-    const revokeTokens = new RevokeTokens(this.refreshTokenRepository);
-    const res = await revokeTokens.execute({
+    const usecase = new RevokeTokens(this.refreshTokenRepository);
+    const res = await usecase.execute({
       userId: params.userId,
     });
 

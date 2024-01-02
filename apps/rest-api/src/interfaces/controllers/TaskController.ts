@@ -1,21 +1,16 @@
-import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepository';
 import { ITaskRepository } from '@/application/repositories/ITaskRepository';
 import { CreateTask } from '@/application/usecases/task/CreateTask';
 import { DeleteDoneTasks } from '@/application/usecases/task/DeleteDoneTasks';
 import { DeleteTask } from '@/application/usecases/task/DeleteTask';
 import { UpdateTask } from '@/application/usecases/task/UpdateTask';
 import { UpdateTaskSort } from '@/application/usecases/task/UpdateTaskSort';
-import { GetTaskGroup } from '@/application/usecases/taskGroup/GetTaskGroup';
-import { TaskGroupRepository } from '../database/TaskGroupRepository';
 import { TaskRepository } from '../database/TaskRepository';
 
 export class TaskController {
   private taskRepository: ITaskRepository;
-  private taskGroupRepository: ITaskGroupRepository;
 
   constructor() {
     this.taskRepository = new TaskRepository();
-    this.taskGroupRepository = new TaskGroupRepository();
   }
 
   async createTask(params: {
@@ -26,18 +21,8 @@ export class TaskController {
     dueDate?: string;
     dueTime?: string;
   }) {
-    const getTaskGroup = new GetTaskGroup(this.taskGroupRepository);
-    const taskGroup = await getTaskGroup.execute({
-      id: params.taskGroupId,
-      userId: params.userId,
-    });
-
-    if (!taskGroup) {
-      return 0;
-    }
-
-    const createTask = new CreateTask(this.taskRepository);
-    const item = await createTask.execute({
+    const usecase = new CreateTask(this.taskRepository);
+    const item = await usecase.execute({
       userId: params.userId,
       taskGroupId: params.taskGroupId,
       title: params.title,
@@ -58,8 +43,8 @@ export class TaskController {
     dueTime?: string;
     done?: boolean;
   }) {
-    const updateTask = new UpdateTask(this.taskRepository);
-    const item = await updateTask.execute({
+    const usecase = new UpdateTask(this.taskRepository);
+    const item = await usecase.execute({
       taskId: params.id,
       userId: params.userId,
       title: params.title,
@@ -78,8 +63,8 @@ export class TaskController {
     userId: number;
     done: boolean;
   }) {
-    const updateTask = new UpdateTask(this.taskRepository);
-    const item = await updateTask.execute({
+    const usecase = new UpdateTask(this.taskRepository);
+    const item = await usecase.execute({
       taskId: params.id,
       userId: params.userId,
       done: params.done,
@@ -92,8 +77,8 @@ export class TaskController {
     id: number;
     userId: number;
   }) {
-    const deleteTask = new DeleteTask(this.taskRepository);
-    const res = await deleteTask.execute({
+    const usecase = new DeleteTask(this.taskRepository);
+    const res = await usecase.execute({
       userId: params.userId,
       taskId: params.id,
     });
@@ -105,8 +90,8 @@ export class TaskController {
     userId: number;
     taskGroupId?: number;
   }) {
-    const deleteDoneTasks = new DeleteDoneTasks(this.taskRepository);
-    const count = await deleteDoneTasks.execute({
+    const usecase = new DeleteDoneTasks(this.taskRepository);
+    const count = await usecase.execute({
       userId: params.userId,
       taskGroupId: params.taskGroupId,
     });
@@ -120,8 +105,8 @@ export class TaskController {
     prevTaskId?: number;
     nextTaskId?: number;
   }) {
-    const updateTaskSort = new UpdateTaskSort(this.taskRepository);
-    const item = await updateTaskSort.execute({
+    const usecase = new UpdateTaskSort(this.taskRepository);
+    const item = await usecase.execute({
       taskId: params.id,
       userId: params.userId,
       prevTaskId: params.prevTaskId,

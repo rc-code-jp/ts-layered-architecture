@@ -7,5 +7,5 @@
     "quickfix.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
-  "cSpell.words": ["Hono", "Nuxt"]
+  "cSpell.words": ["Hono", "Nuxt", "usecase", "usecases"]
 }

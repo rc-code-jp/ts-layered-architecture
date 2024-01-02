@@ -4,6 +4,7 @@ import { DeleteTaskGroup } from '@/application/usecases/taskGroup/DeleteTaskGrou
 import { GetTaskGroup } from '@/application/usecases/taskGroup/GetTaskGroup';
 import { GetTaskGroupList } from '@/application/usecases/taskGroup/GetTaskGroupList';
 import { UpdateTaskGroup } from '@/application/usecases/taskGroup/UpdateTaskGroup';
+import { UpdateTaskGroupSort } from '@/application/usecases/taskGroup/UpdateTaskGroupSort';
 import { TaskGroupRepository } from '../database/TaskGroupRepository';
 
 export class TaskGroupController {
@@ -17,8 +18,8 @@ export class TaskGroupController {
     id: number;
     userId: number;
   }) {
-    const getTaskGroup = new GetTaskGroup(this.taskGroupRepository);
-    const item = await getTaskGroup.execute({
+    const usecase = new GetTaskGroup(this.taskGroupRepository);
+    const item = await usecase.execute({
       id: params.id,
       userId: params.userId,
     });
@@ -29,8 +30,8 @@ export class TaskGroupController {
   async getTaskGroupList(params: {
     userId: number;
   }) {
-    const getTaskGroupList = new GetTaskGroupList(this.taskGroupRepository);
-    const list = await getTaskGroupList.execute(params.userId);
+    const usecase = new GetTaskGroupList(this.taskGroupRepository);
+    const list = await usecase.execute(params.userId);
 
     return list;
   }
@@ -39,8 +40,8 @@ export class TaskGroupController {
     userId: number;
     name: string;
   }) {
-    const createTaskGroup = new CreateTaskGroup(this.taskGroupRepository);
-    const item = await createTaskGroup.execute({
+    const usecase = new CreateTaskGroup(this.taskGroupRepository);
+    const item = await usecase.execute({
       name: params.name,
       userId: params.userId,
     });
@@ -53,8 +54,8 @@ export class TaskGroupController {
     userId: number;
     name: string;
   }) {
-    const updateTask = new UpdateTaskGroup(this.taskGroupRepository);
-    const item = await updateTask.execute({
+    const usecase = new UpdateTaskGroup(this.taskGroupRepository);
+    const item = await usecase.execute({
       userId: params.userId,
       taskGroupId: params.id,
       name: params.name,
@@ -67,12 +68,29 @@ export class TaskGroupController {
     id: number;
     userId: number;
   }) {
-    const deleteTaskGroup = new DeleteTaskGroup(this.taskGroupRepository);
-    const res = await deleteTaskGroup.execute({
+    const usecase = new DeleteTaskGroup(this.taskGroupRepository);
+    const res = await usecase.execute({
       taskGroupId: params.id,
       userId: params.userId,
     });
 
     return res;
+  }
+
+  async updateTaskGroupSort(params: {
+    id: number;
+    userId: number;
+    prevTaskId?: number;
+    nextTaskId?: number;
+  }) {
+    const usecase = new UpdateTaskGroupSort(this.taskGroupRepository);
+    const item = await usecase.execute({
+      taskId: params.id,
+      userId: params.userId,
+      prevTaskId: params.prevTaskId,
+      nextTaskId: params.nextTaskId,
+    });
+
+    return item.id;
   }
 }
