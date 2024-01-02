@@ -4,6 +4,7 @@ import { CreateTask } from '@/application/usecases/task/CreateTask';
 import { DeleteDoneTasks } from '@/application/usecases/task/DeleteDoneTasks';
 import { DeleteTask } from '@/application/usecases/task/DeleteTask';
 import { UpdateTask } from '@/application/usecases/task/UpdateTask';
+import { UpdateTaskSort } from '@/application/usecases/task/UpdateTaskSort';
 import { GetTaskGroup } from '@/application/usecases/taskGroup/GetTaskGroup';
 import { TaskGroupRepository } from '../database/TaskGroupRepository';
 import { TaskRepository } from '../database/TaskRepository';
@@ -37,12 +38,12 @@ export class TaskController {
 
     const createTask = new CreateTask(this.taskRepository);
     const item = await createTask.execute({
+      userId: params.userId,
       taskGroupId: params.taskGroupId,
       title: params.title,
       description: params.description,
       dueDate: params.dueDate,
       dueTime: params.dueTime,
-      sort: 0,
     });
 
     return item.id;
@@ -111,5 +112,22 @@ export class TaskController {
     });
 
     return count;
+  }
+
+  async updateTaskSort(params: {
+    id: number;
+    userId: number;
+    prevTaskId?: number;
+    nextTaskId?: number;
+  }) {
+    const updateTaskSort = new UpdateTaskSort(this.taskRepository);
+    const item = await updateTaskSort.execute({
+      taskId: params.id,
+      userId: params.userId,
+      prevTaskId: params.prevTaskId,
+      nextTaskId: params.nextTaskId,
+    });
+
+    return item.id;
   }
 }

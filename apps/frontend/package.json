@@ -19,6 +19,10 @@
     "vuetify": "^3.4.9"
   },
   "dependencies": {
-    "@mdi/font": "^7.4.47"
+    "@mdi/font": "^7.4.47",
+    "vuedraggable": "^4.1.0"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }

@@ -3,8 +3,8 @@ import { ITaskGroupRepository } from '@/application/repositories/ITaskGroupRepos
 export class GetTaskGroupList {
   constructor(private repository: ITaskGroupRepository) {}
 
-  execute(userId: number) {
-    return this.repository.findAll({
+  async execute(userId: number) {
+    return await this.repository.findAll({
       userId,
     });
   }

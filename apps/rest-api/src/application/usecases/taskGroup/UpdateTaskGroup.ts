@@ -17,9 +17,8 @@ export class UpdateTaskGroup {
       throw new Error('TaskGroup not found');
     }
 
-    // FIXME: ここでTaskGroupModelのプロパティを直接変更しているが、これは良くない
     Object.assign(model, params);
 
-    return this.repository.save({ item: model });
+    return await this.repository.save({ item: model });
   }
 }

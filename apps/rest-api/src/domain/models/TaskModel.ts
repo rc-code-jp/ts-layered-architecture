@@ -1,7 +1,6 @@
 import { BaseModel } from './BaseModel';
 
 export class TaskModel extends BaseModel {
-  readonly id?: number;
   readonly taskGroupId: number;
   readonly title: string;
   readonly done?: boolean;
@@ -10,8 +9,10 @@ export class TaskModel extends BaseModel {
   readonly dueTime?: string;
   readonly sort: number;
 
+  static readonly INITIAL_SORT_VALUE = 65535;
+
   constructor(props: {
-    id?: number;
+    id: number;
     taskGroupId: number;
     title: string;
     done?: boolean;
@@ -20,8 +21,7 @@ export class TaskModel extends BaseModel {
     dueTime?: string;
     sort: number;
   }) {
-    super();
-    this.id = props.id;
+    super({ id: props.id });
     this.taskGroupId = props.taskGroupId;
     this.title = props.title;
     this.done = props.done;

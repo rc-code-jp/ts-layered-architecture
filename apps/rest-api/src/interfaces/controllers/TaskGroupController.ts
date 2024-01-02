@@ -43,7 +43,6 @@ export class TaskGroupController {
     const item = await createTaskGroup.execute({
       name: params.name,
       userId: params.userId,
-      sort: 0,
     });
 
     return item.id;

@@ -22,6 +22,17 @@ export class TaskRepository implements ITaskRepository {
     return model;
   }
 
+  async findMaxSort(params: { userId: number; taskGroupId: number }): Promise<number> {
+    const item = await db.task.findFirst({
+      select: { sort: true },
+      where: { taskGroupId: params.taskGroupId, taskGroup: { userId: params.userId } },
+      orderBy: { sort: 'desc' },
+    });
+    if (!item) return 0;
+
+    return item.sort;
+  }
+
   async save(params: { item: TaskModel }): Promise<TaskModel> {
     const item = params.item;
 

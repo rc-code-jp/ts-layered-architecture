@@ -3,7 +3,7 @@ import { clearAuthToken, getAuthToken, setAuthToken } from '~/_auth';
 type Options = {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   headers?: Record<string, string>;
-  body?: Record<string, string | number | boolean>;
+  body?: Record<string, string | number | boolean | undefined | null>;
 };
 
 export default defineNuxtPlugin((nuxtApp) => {

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import draggable from 'vuedraggable'
+
 type Task = {
   id: number
   title: string
@@ -119,6 +121,24 @@ const submitTask = async (task: Task) => {
   }
 }
 
+const dragEnd = async (event: {newIndex: number}) => {
+  try {
+    const taskId = selectedTaskGroup.value?.tasks[event.newIndex].id;
+    const prevTaskId = selectedTaskGroup.value?.tasks[event.newIndex - 1]?.id;
+    const nextTaskId = selectedTaskGroup.value?.tasks[event.newIndex + 1]?.id;
+
+    await $customFetch(`/tasks/${taskId}/sort`, {
+      method: 'PATCH',
+      body: {
+        prevTaskId: prevTaskId,
+        nextTaskId: nextTaskId
+      },
+    })
+  } catch (err) {
+    console.dir(err);
+  }
+}
+
 </script>
 
 <template>
@@ -139,39 +159,47 @@ const submitTask = async (task: Task) => {
     </v-tabs>
 
     <v-list v-if="selectedTaskGroup" lines="three">
-      <v-list-item v-for="task in selectedTaskGroup.tasks" :key="task.id" :value="task">
-        <template v-slot:prepend>
-          <v-list-item-action>
-            <v-checkbox-btn v-model="task.done" :checked="task.done" @click.prevent="changeDone(task)"></v-checkbox-btn>
-          </v-list-item-action>
-        </template>
+      <draggable
+        v-model="selectedTaskGroup.tasks"
+        item-key="id"
+        @end="dragEnd"
+      >
+        <template #item="{element: task}">
+          <v-list-item>
+            <template v-slot:prepend>
+              <v-list-item-action>
+                <v-checkbox-btn v-model="task.done" :checked="task.done" @click.prevent="changeDone(task)"></v-checkbox-btn>
+              </v-list-item-action>
+            </template>
 
-        <v-form @submit.prevent="submitTask(task)">
-          <v-list-item-title>
-            <input
-              v-model="task.title"
-              ref="$inputTaskTitle"
-              :style="{
-                border: 'none',
-                outline: 'none',
-                background: 'transparent',
-                width: '100%',
-              }"
-              @keyup.enter="submitTask(task)"
-            />
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            {{ task.description }}
-          </v-list-item-subtitle>
-        </v-form>
+            <form @submit.prevent="submitTask(task)">
+              <v-list-item-title>
+                <input
+                  v-model.trim="task.title"
+                  name="taskTitle"
+                  ref="$inputTaskTitle"
+                  :style="{
+                    border: 'none',
+                    outline: 'none',
+                    background: 'transparent',
+                    width: '100%',
+                  }"
+                />
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ task.description }}
+              </v-list-item-subtitle>
+            </form>
 
-        <template v-slot:append>
-          <v-list-item-action>
-            <v-btn variant="text" size="small" icon="$delete" @click="deleteTask(task)">
-            </v-btn>
-          </v-list-item-action>
+            <template v-slot:append>
+              <v-list-item-action>
+                <v-btn variant="text" size="small" icon="$delete" @click="deleteTask(task)">
+                </v-btn>
+              </v-list-item-action>
+            </template>
+          </v-list-item>
         </template>
-      </v-list-item>
+      </draggable>
     </v-list>
 
     <v-btn

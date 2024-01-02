@@ -11,6 +11,6 @@ export class DeleteTaskGroup {
     if (!model) {
       throw new Error('TaskGroup not found');
     }
-    return this.repository.delete({ item: model });
+    return await this.repository.delete({ item: model });
   }
 }

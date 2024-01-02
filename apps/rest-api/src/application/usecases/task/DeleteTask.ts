@@ -11,6 +11,6 @@ export class DeleteTask {
     if (!model) {
       throw new Error('Task not found');
     }
-    return this.repository.delete({ item: model });
+    return await this.repository.delete({ item: model });
   }
 }

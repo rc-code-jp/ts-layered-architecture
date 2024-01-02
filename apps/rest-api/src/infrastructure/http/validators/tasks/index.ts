@@ -64,3 +64,19 @@ export const patchDoneValidation = factory.createMiddleware(
     },
   ),
 );
+
+export const patchSortValidation = factory.createMiddleware(
+  zValidator(
+    'json',
+    z.object({
+      prevTaskId: z.number().optional(),
+      nextTaskId: z.number().optional(),
+    }),
+    (result) => {
+      if (!result.success) {
+        const errors = parseValidationError(result.error.issues);
+        return invalidResponse(errors);
+      }
+    },
+  ),
+);

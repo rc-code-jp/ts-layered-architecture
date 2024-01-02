@@ -21,9 +21,8 @@ export class UpdateTask {
       throw new Error('Task not found');
     }
 
-    // FIXME: ここでTaskModelのプロパティを直接変更しているが、これは良くない
     Object.assign(model, params);
 
-    return this.repository.save({ item: model });
+    return await this.repository.save({ item: model });
   }
 }

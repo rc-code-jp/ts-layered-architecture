@@ -17,32 +17,32 @@ async function main() {
         create: [
           {
             name: 'Example Task Group A',
-            sort: 0,
+            sort: 100,
             tasks: {
               create: [
                 {
                   title: 'Test Task 1',
-                  sort: 0,
+                  sort: 100,
                 },
                 {
                   title: 'Test Task 2',
                   description: 'This is a test task',
                   dueDate: '2024-12-31',
-                  sort: 1,
+                  sort: 500,
                 },
                 {
                   title: 'Test Task 3',
                   description: 'This is a test task',
                   dueDate: '2024-12-31',
                   dueTime: '12:12:00',
-                  sort: 2,
+                  sort: 1000,
                 },
               ],
             },
           },
           {
             name: 'Example Task Group B',
-            sort: 1,
+            sort: 500,
           },
         ],
       },

@@ -15,6 +15,9 @@ export class TaskGroupRepository implements ITaskGroupRepository {
       where: {
         userId: params.userId,
       },
+      orderBy: {
+        sort: 'asc',
+      },
     });
     const models = list.map(
       (item) =>
@@ -42,6 +45,9 @@ export class TaskGroupRepository implements ITaskGroupRepository {
       where: {
         taskGroupId: item.id,
       },
+      orderBy: {
+        sort: 'asc',
+      },
     });
 
     const model = new TaskGroupModel({
@@ -65,6 +71,18 @@ export class TaskGroupRepository implements ITaskGroupRepository {
     });
 
     return model;
+  }
+
+  async findMaxSort(params: { userId: number }): Promise<number> {
+    const item = await db.taskGroup.findFirst({
+      select: { sort: true },
+      where: { userId: params.userId },
+      orderBy: { sort: 'desc' },
+    });
+    if (!item) {
+      return 0;
+    }
+    return item.sort;
   }
 
   async save(params: { item: TaskGroupModel }): Promise<TaskGroupModel> {
