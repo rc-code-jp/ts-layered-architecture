@@ -43,19 +43,26 @@ const  submit = async () => {
     <h1>Sign up</h1>
     <form @submit.prevent="submit">
       <div>
-        <label>User name</label>
-        <input type="text" v-model="form.name"/>
+        <v-text-field
+          label="メールアドレス"
+          placeholder="example@example.com"
+          v-model="form.email"
+          type="email"
+          variant="outlined"
+          autocomplete="email"
+        />
       </div>
       <div>
-        <label>Email</label>
-        <input type="email" v-model="form.email" />
+        <v-text-field
+          label="パスワード"
+          v-model="form.password"
+          type="password"
+          variant="outlined"
+          autocomplete="new-password"
+        />
       </div>
       <div>
-        <label>Password</label>
-        <input type="password" v-model="form.password"/>
-      </div>
-      <div>
-        <button type="submit">Sign up</button>
+        <v-btn type="submit" color="primary" size="large">Sign up</v-btn>
       </div>
     </form>
   </div>

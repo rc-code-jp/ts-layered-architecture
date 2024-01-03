@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
+import { getAuthToken } from '~/_auth';
 
 type Task = {
   id: number
@@ -14,6 +15,17 @@ type TaskGroup = {
   name: string
   tasks: Task[]
 }
+
+definePageMeta({
+  middleware: [
+    () => {
+      const authToken = getAuthToken()
+      if (!authToken.accessToken) {
+        return navigateTo('/auth/signin')
+      }
+    }
+  ]
+})
 
 const {$customFetch} = useNuxtApp()
 
@@ -209,6 +221,7 @@ const dragEnd = async (event: {newIndex: number}) => {
         right: '1rem',
       }"
       icon="$plus"
+      color="primary"
       @click="addTask">
     </v-btn>
   </div>
