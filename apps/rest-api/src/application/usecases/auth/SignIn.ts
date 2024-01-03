@@ -5,7 +5,7 @@ import { comparePassword } from '@/utils/auth/password';
 import { hashToken } from '@/utils/auth/token';
 import { generateUUID } from '@/utils/auth/uuid';
 
-export class GetUser {
+export class SignIn {
   constructor(
     private repository: IUserRepository,
     private refreshTokenRepository: IRefreshTokenRepository,

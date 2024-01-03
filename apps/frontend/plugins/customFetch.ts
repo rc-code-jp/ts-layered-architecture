@@ -1,4 +1,4 @@
-import { clearAuthToken, getAuthToken, setAuthToken } from '~/_auth';
+// import { clearAuthToken, getAuthToken, setAuthToken } from '~/_auth';
 
 type Options = {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';

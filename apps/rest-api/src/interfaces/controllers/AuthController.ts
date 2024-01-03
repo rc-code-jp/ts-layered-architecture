@@ -1,9 +1,10 @@
 import { IRefreshTokenRepository } from '@/application/repositories/IRefreshTokenRepository';
 import { IUserRepository } from '@/application/repositories/IUserRepository';
 import { CreateUser } from '@/application/usecases/auth/CreateUser';
-import { GetUser } from '@/application/usecases/auth/GetUser';
+import { GetAuthMe } from '@/application/usecases/auth/GetAuthMe';
 import { RefreshToken } from '@/application/usecases/auth/RefreshToken';
 import { RevokeTokens } from '@/application/usecases/auth/RevokeTokens';
+import { SignIn } from '@/application/usecases/auth/SignIn';
 import { RefreshTokenRepository } from '../database/RefreshTokenRepository';
 import { UserRepository } from '../database/UserRepository';
 
@@ -38,7 +39,7 @@ export class AuthController {
     email: string;
     password: string;
   }) {
-    const usecase = new GetUser(this.userRepository, this.refreshTokenRepository);
+    const usecase = new SignIn(this.userRepository, this.refreshTokenRepository);
     const res = await usecase.execute({
       email: params.email,
       password: params.password,
@@ -74,6 +75,19 @@ export class AuthController {
 
     return {
       count: res.count,
+    };
+  }
+
+  async getMe(params: {
+    userId: number;
+  }) {
+    const usecase = new GetAuthMe(this.userRepository);
+    const res = await usecase.execute({
+      userId: params.userId,
+    });
+
+    return {
+      item: res,
     };
   }
 }
