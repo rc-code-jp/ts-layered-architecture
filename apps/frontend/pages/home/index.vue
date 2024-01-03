@@ -163,7 +163,7 @@ const dragEnd = async (event: {newIndex: number}) => {
         <v-btn 
           icon="$menu"
           variant="text"
-          @click="() => router.push('/task-groups')">
+          @click.stop="() => router.push('/task-groups')">
         </v-btn>
       </v-tab>
     </v-tabs>

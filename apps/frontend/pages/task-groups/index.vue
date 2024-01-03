@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import draggable from 'vuedraggable'
-import type { TaskGroup, Task } from '~/types';
+import type { TaskGroup } from '~/types';
 
 const {$customFetch} = useNuxtApp()
+
+const $inputName = ref<HTMLInputElement | null>(null)
 
 const {data: taskGroups} = await useAsyncData('/task-groups', () => {
   return $customFetch<{
@@ -40,6 +43,49 @@ const dragEnd = async (event: {newIndex: number}) => {
     console.dir(err);
   }
 }
+
+const addTaskGroup = () => {
+  taskGroups.value?.list.push({
+    id: 0,
+    name: '',
+    tasks: []
+  })
+
+  // 最後の要素にフォーカス
+  nextTick(() => {
+    // NOTE: 配列になると思ったけど、配列にならなかった
+    $inputName.value?.focus();
+  })
+}
+
+const submitTaskGroup = async (taskGroup: TaskGroup) => {
+  try {
+    if (taskGroup.id) {
+      // 更新
+      await $customFetch<{
+        id: number
+      }>(`/task-groups/${taskGroup.id}`, {
+        method: 'PATCH',
+        body: {
+          name: taskGroup.name,
+        },
+      })
+    } else {
+      // 新規
+      const data = await $customFetch<{
+        id: number
+      }>(`/task-groups`, {
+        method: 'POST',
+        body: {
+          name: taskGroup.name,
+        },
+      })
+      taskGroup.id = data.id
+    }
+  } catch (err) {
+    console.dir(err);
+  }
+}
 </script>
 
 <template>
@@ -54,7 +100,18 @@ const dragEnd = async (event: {newIndex: number}) => {
         <template #item="{element: taskGroup}">
           <v-list-item>
             <v-list-item-title>
-              {{ taskGroup.name }}
+              <input
+                  v-model.trim="taskGroup.name"
+                  name="taskGroupName"
+                  ref="$inputName"
+                  :style="{
+                    border: 'none',
+                    outline: 'none',
+                    background: 'transparent',
+                    width: '100%',
+                  }"
+                  @change="submitTaskGroup(taskGroup)"
+                />
             </v-list-item-title>
 
             <template v-slot:append>
@@ -71,6 +128,16 @@ const dragEnd = async (event: {newIndex: number}) => {
           </v-list-item>
         </template>
       </draggable>
+      <v-list-item>
+        <div>
+          <v-btn size="large" variant="outlined" @click="addTaskGroup">
+            Add Task group
+          </v-btn>
+        </div>  
+      </v-list-item>
     </v-list>
+    <div>
+      <nuxt-link to="/home">Back</nuxt-link>
+    </div>
   </div>
 </template>

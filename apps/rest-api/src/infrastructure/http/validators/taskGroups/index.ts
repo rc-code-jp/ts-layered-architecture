@@ -30,7 +30,6 @@ export const patchValidation = factory.createMiddleware(
     'json',
     z.object({
       ...saveParams,
-      id: z.number().int(),
     }),
     (result) => {
       if (!result.success) {
