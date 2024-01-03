@@ -7,8 +7,8 @@ export class UpdateTaskSort {
   async execute(params: {
     userId: number;
     taskId: number;
-    prevTaskId?: number;
-    nextTaskId?: number;
+    prevId?: number;
+    nextId?: number;
   }) {
     const model = await this.repository.findOne({
       id: params.taskId,
@@ -19,9 +19,9 @@ export class UpdateTaskSort {
     }
 
     let prevModelSort = 0;
-    if (params.prevTaskId) {
+    if (params.prevId) {
       const prevModel = await this.repository.findOne({
-        id: params.prevTaskId,
+        id: params.prevId,
         userId: params.userId,
       });
       if (!prevModel) {
@@ -31,9 +31,9 @@ export class UpdateTaskSort {
     }
 
     let nextModelSort = TaskModel.INITIAL_SORT_VALUE;
-    if (params.nextTaskId) {
+    if (params.nextId) {
       const nextModel = await this.repository.findOne({
-        id: params.nextTaskId,
+        id: params.nextId,
         userId: params.userId,
       });
       if (!nextModel) {

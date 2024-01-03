@@ -69,8 +69,8 @@ export const patchSortValidation = factory.createMiddleware(
   zValidator(
     'json',
     z.object({
-      prevTaskId: z.number().optional(),
-      nextTaskId: z.number().optional(),
+      prevId: z.number().optional(),
+      nextId: z.number().optional(),
     }),
     (result) => {
       if (!result.success) {

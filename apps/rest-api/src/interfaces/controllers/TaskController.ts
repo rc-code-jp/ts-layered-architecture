@@ -102,15 +102,15 @@ export class TaskController {
   async updateTaskSort(params: {
     id: number;
     userId: number;
-    prevTaskId?: number;
-    nextTaskId?: number;
+    prevId?: number;
+    nextId?: number;
   }) {
     const usecase = new UpdateTaskSort(this.taskRepository);
     const item = await usecase.execute({
       taskId: params.id,
       userId: params.userId,
-      prevTaskId: params.prevTaskId,
-      nextTaskId: params.nextTaskId,
+      prevId: params.prevId,
+      nextId: params.nextId,
     });
 
     return item.id;

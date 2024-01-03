@@ -17,8 +17,8 @@ export const patchTaskGroupSort = factory.createHandlers(patchSortValidation, as
   const res = await taskGroupController.updateTaskGroupSort({
     id: Number(taskGroupId),
     userId: userId,
-    prevTaskId: body.prevTaskId,
-    nextTaskId: body.nextTaskId,
+    prevId: body.prevId,
+    nextId: body.nextId,
   });
 
   if (!res) return notFoundResponse();

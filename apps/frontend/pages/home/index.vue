@@ -1,22 +1,7 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
 import { getAuthToken } from '~/_auth';
-
-type Task = {
-  id: number
-  title: string
-  description: string
-  taskGroupId: number
-  done: boolean
-  dueDate: string | null,
-  dueTime: string | null,
-}
-
-type TaskGroup = {
-  id: number
-  name: string
-  tasks: Task[]
-}
+import type { TaskGroup, Task } from '~/types';
 
 definePageMeta({
   middleware: [
@@ -30,6 +15,8 @@ definePageMeta({
 })
 
 const {$customFetch} = useNuxtApp()
+
+const router = useRouter()
 
 const $inputTaskTitle = ref<HTMLInputElement | null>(null)
 
@@ -74,7 +61,7 @@ const changeDone = async (task: Task) => {
 }
 
 const deleteTask = async (task: Task) => {
-  const confirm = window.confirm('Are you sure?')
+  const confirm = window.confirm('削除します、よろしいですか？')
   if (!confirm) return
   try {
     await $customFetch(`/tasks/${task.id}`, {
@@ -139,15 +126,15 @@ const submitTask = async (task: Task) => {
 
 const dragEnd = async (event: {newIndex: number}) => {
   try {
-    const taskId = selectedTaskGroup.value?.tasks[event.newIndex].id;
-    const prevTaskId = selectedTaskGroup.value?.tasks[event.newIndex - 1]?.id;
-    const nextTaskId = selectedTaskGroup.value?.tasks[event.newIndex + 1]?.id;
+    const targetId = selectedTaskGroup.value?.tasks[event.newIndex].id;
+    const prevId = selectedTaskGroup.value?.tasks[event.newIndex - 1]?.id;
+    const nextId = selectedTaskGroup.value?.tasks[event.newIndex + 1]?.id;
 
-    await $customFetch(`/tasks/${taskId}/sort`, {
+    await $customFetch(`/tasks/${targetId}/sort`, {
       method: 'PATCH',
       body: {
-        prevTaskId: prevTaskId,
-        nextTaskId: nextTaskId
+        prevId: prevId,
+        nextId: nextId
       },
     })
   } catch (err) {
@@ -172,8 +159,12 @@ const dragEnd = async (event: {newIndex: number}) => {
       >
         {{ taskGroup.name }}
       </v-tab>
-      <v-tab>
-        <v-btn icon="$menu" variant="text"></v-btn>
+      <v-tab :key="0" :value="0">
+        <v-btn 
+          icon="$menu"
+          variant="text"
+          @click="() => router.push('/task-groups')">
+        </v-btn>
       </v-tab>
     </v-tabs>
 
@@ -212,7 +203,12 @@ const dragEnd = async (event: {newIndex: number}) => {
 
             <template v-slot:append>
               <v-list-item-action>
-                <v-btn variant="text" size="small" icon="$delete" @click="deleteTask(task)">
+                <v-btn
+                  variant="text"
+                  size="small"
+                  icon="$delete"
+                  @click="deleteTask(task)"
+                >
                 </v-btn>
               </v-list-item-action>
             </template>
