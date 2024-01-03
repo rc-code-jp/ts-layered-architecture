@@ -8,6 +8,8 @@ type Task = {
   description: string
   taskGroupId: number
   done: boolean
+  dueDate: string | null,
+  dueTime: string | null,
 }
 
 type TaskGroup = {
@@ -29,7 +31,7 @@ definePageMeta({
 
 const {$customFetch} = useNuxtApp()
 
-const $inputTaskTitle = ref<HTMLInputElement[]>([])
+const $inputTaskTitle = ref<HTMLInputElement | null>(null)
 
 const {data: taskGroups} = await useAsyncData('/task-groups', () => {
   return $customFetch<{
@@ -90,12 +92,15 @@ const addTask = () => {
     title: '',
     description: '',
     taskGroupId: selectedTaskGroup.value.id,
+    dueDate: null,
+    dueTime: null,
     done: false,
   })
 
   // 最後の要素にフォーカス
   nextTick(() => {
-    $inputTaskTitle.value?.at(-1)?.focus()
+    // NOTE: 配列になると思ったけど、配列にならなかった
+    $inputTaskTitle.value?.focus();
   })
 }
 
@@ -103,8 +108,8 @@ const submitTask = async (task: Task) => {
   try {
     if (task.id) {
       // 更新
-      const data = await $customFetch<{
-        item: Task
+      await $customFetch<{
+        id: number
       }>(`/tasks/${task.id}`, {
         method: 'PATCH',
         body: {
@@ -113,11 +118,10 @@ const submitTask = async (task: Task) => {
           taskGroupId: task.taskGroupId,
         },
       })
-      console.dir(data);
     } else {
       // 新規
       const data = await $customFetch<{
-        item: Task
+        id: number
       }>(`/tasks`, {
         method: 'POST',
         body: {
@@ -126,7 +130,7 @@ const submitTask = async (task: Task) => {
           taskGroupId: task.taskGroupId,
         },
       })
-      console.dir(data);
+      task.id = data.id
     }
   } catch (err) {
     console.dir(err);
@@ -167,6 +171,9 @@ const dragEnd = async (event: {newIndex: number}) => {
         @click.prevent="selectTaskGroup(taskGroup)"
       >
         {{ taskGroup.name }}
+      </v-tab>
+      <v-tab>
+        <v-btn icon="$menu" variant="text"></v-btn>
       </v-tab>
     </v-tabs>
 
