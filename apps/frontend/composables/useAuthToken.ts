@@ -1,6 +1,6 @@
 export const useAuthToken = () => {
-  const accessToken = useCookie('accessToken');
-  const refreshToken = useCookie('refreshToken');
+  const accessToken = useCookie('auth:accessToken');
+  const refreshToken = useCookie('auth:refreshToken');
 
   return {
     getToken: (): {

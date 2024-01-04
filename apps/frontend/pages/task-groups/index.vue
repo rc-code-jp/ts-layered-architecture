@@ -3,6 +3,10 @@ import { ref } from 'vue'
 import draggable from 'vuedraggable'
 import type { TaskGroup } from '~/types';
 
+definePageMeta({
+  middleware: ['auth']
+})
+
 const {$customFetch} = useNuxtApp()
 
 const $inputName = ref<HTMLInputElement | null>(null)
