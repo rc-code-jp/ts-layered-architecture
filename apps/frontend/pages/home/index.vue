@@ -18,18 +18,18 @@ const {data: taskGroups} = await useAsyncData('/task-groups', () => {
   }>('/task-groups')
 })
 
-const firstTaskGroupId = taskGroups.value?.list[0].id ?? null
+const selectedTaskGroupId = ref<number | null>(null)
 
-const selectedTaskGroupId = ref<number | null>(firstTaskGroupId)
-const selectedTaskGroup = ref<TaskGroup | null>(null)
+const tasks = ref<Task[]>([])
 
 watch(selectedTaskGroupId, async (value) => {
+  const id = value ?? taskGroups.value?.list[0]?.id
   const data = await $customFetch<{
     item: TaskGroup
-  }>(`/task-groups/${value}`, {
+  }>(`/task-groups/${id}`, {
     method: 'GET',
   })
-  selectedTaskGroup.value = data.item
+  tasks.value = data.item.tasks
 }, {
   immediate: true,
 })
@@ -59,18 +59,19 @@ const deleteTask = async (task: Task) => {
     await $customFetch(`/tasks/${task.id}`, {
       method: 'DELETE',
     })
-    selectedTaskGroup.value?.tasks.splice(selectedTaskGroup.value?.tasks.indexOf(task), 1)
+    tasks.value.splice(tasks.value.indexOf(task), 1)
   } catch (err) {
     console.dir(err);
   }
 }
 
 const addTask = () => {
-  selectedTaskGroup.value?.tasks.push({
+  if (!selectedTaskGroupId.value) return
+  tasks.value.push({
     id: 0,
     title: '',
     description: '',
-    taskGroupId: selectedTaskGroup.value.id,
+    taskGroupId: selectedTaskGroupId.value,
     dueDate: null,
     dueTime: null,
     done: false,
@@ -118,9 +119,9 @@ const submitTask = async (task: Task) => {
 
 const dragEnd = async (event: {newIndex: number}) => {
   try {
-    const targetId = selectedTaskGroup.value?.tasks[event.newIndex].id;
-    const prevId = selectedTaskGroup.value?.tasks[event.newIndex - 1]?.id;
-    const nextId = selectedTaskGroup.value?.tasks[event.newIndex + 1]?.id;
+    const targetId = tasks.value[event.newIndex].id;
+    const prevId = tasks.value[event.newIndex - 1]?.id;
+    const nextId = tasks.value[event.newIndex + 1]?.id;
 
     await $customFetch(`/tasks/${targetId}/sort`, {
       method: 'PATCH',
@@ -140,29 +141,27 @@ const dragEnd = async (event: {newIndex: number}) => {
   <div>
     <v-tabs
       v-if="taskGroups"
-      v-model="selectedTaskGroupId"
       align-tabs="left"
     >
       <v-tab 
         v-for="taskGroup in taskGroups.list"
         :key="taskGroup.id"
         :value="taskGroup.id"
-        @click.prevent="selectTaskGroup(taskGroup)"
+        @click="selectTaskGroup(taskGroup)"
       >
         {{ taskGroup.name }}
       </v-tab>
-      <v-tab :key="0" :value="0">
-        <v-btn 
-          icon="$menu"
-          variant="text"
-          @click.stop="() => router.push('/task-groups')">
-        </v-btn>
+      <v-tab
+        :key="0"
+        :value="0"
+        @click="() => router.push('/task-groups')">
+        <v-icon icon="$menu"></v-icon>
       </v-tab>
     </v-tabs>
 
-    <v-list v-if="selectedTaskGroup" lines="three">
+    <v-list lines="three">
       <draggable
-        v-model="selectedTaskGroup.tasks"
+        v-model="tasks"
         item-key="id"
         @end="dragEnd"
       >

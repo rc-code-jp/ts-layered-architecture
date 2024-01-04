@@ -39,8 +39,8 @@ const dragEnd = async (event: {newIndex: number}) => {
     await $customFetch(`/task-groups/${targetId}/sort`, {
       method: 'PATCH',
       body: {
-        prevTaskId: prevId,
-        nextTaskId: nextId
+        prevId: prevId,
+        nextId: nextId
       },
     })
   } catch (err) {
