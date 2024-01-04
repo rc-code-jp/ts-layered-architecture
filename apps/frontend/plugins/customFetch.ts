@@ -6,13 +6,19 @@ type Options = {
   body?: Record<string, string | number | boolean | undefined | null>;
 };
 
+const setAuthToken = (_arg: { accessToken: string; refreshToken: string }) => {};
+const clearAuthToken = () => {};
+
 export default defineNuxtPlugin((nuxtApp) => {
   const baseUrl = nuxtApp.$config.public.API_URL ?? '';
 
   return {
     provide: {
       customFetch: <T>(path: string, options: Options = {}) => {
-        const authToken = getAuthToken();
+        const authToken = {
+          accessToken: null,
+          refreshToken: null,
+        };
 
         const defaultHeaders = {
           'Content-Type': 'application/json',

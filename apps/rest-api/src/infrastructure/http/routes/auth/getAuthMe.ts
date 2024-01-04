@@ -12,13 +12,13 @@ export const getAuthMe = factory.createHandlers(isAuthenticated, async (c) => {
   const userId = c.get('userId');
 
   const authController = new AuthController();
-  const res = await authController.getMe({
+  const res = await authController.getAuthMe({
     userId: userId,
   });
 
   return successResponse(
     JSON.stringify({
-      item: res,
+      user: res.item,
     }),
   );
 });

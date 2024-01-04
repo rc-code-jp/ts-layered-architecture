@@ -35,9 +35,15 @@ export function generateTokens(userId: number, jti: string) {
   };
 }
 
-export function verifyToken(token: string) {
+export function verifyAccessToken(token: string) {
   return jwt.verify(token, process.env.JWT_ACCESS_SECRET ?? '') as {
     userId: number;
-    jti?: string;
+  };
+}
+
+export function verifyRefreshToken(token: string) {
+  return jwt.verify(token, process.env.JWT_REFRESH_SECRET ?? '') as {
+    userId: number;
+    jti: string;
   };
 }

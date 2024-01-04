@@ -1,5 +1,5 @@
 import { unauthorizedResponse } from '@/infrastructure/http/utils/responses';
-import { verifyToken } from '@/utils/auth/jtw';
+import { verifyAccessToken } from '@/utils/auth/jtw';
 import { createFactory } from 'hono/factory';
 
 const factory = createFactory<{
@@ -16,7 +16,7 @@ export const isAuthenticated = factory.createMiddleware(async (c, next) => {
 
   try {
     const token = authorization.split(' ')[1];
-    const payload = verifyToken(token);
+    const payload = verifyAccessToken(token);
     c.set('userId', payload.userId);
     await next();
   } catch (_e) {

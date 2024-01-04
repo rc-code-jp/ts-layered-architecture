@@ -1,17 +1,9 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
-import { getAuthToken } from '~/_auth';
 import type { TaskGroup, Task } from '~/types';
 
 definePageMeta({
-  middleware: [
-    () => {
-      const authToken = getAuthToken()
-      if (!authToken.accessToken) {
-        return navigateTo('/auth/signin')
-      }
-    }
-  ]
+  middleware: []
 })
 
 const {$customFetch} = useNuxtApp()

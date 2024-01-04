@@ -1,6 +1,6 @@
 import { IRefreshTokenRepository } from '@/application/repositories/IRefreshTokenRepository';
 import { IUserRepository } from '@/application/repositories/IUserRepository';
-import { generateTokens, verifyToken } from '@/utils/auth/jtw';
+import { generateTokens, verifyRefreshToken } from '@/utils/auth/jtw';
 import { hashToken } from '@/utils/auth/token';
 import { generateUUID } from '@/utils/auth/uuid';
 
@@ -11,7 +11,7 @@ export class RefreshToken {
   ) {}
 
   async execute(params: { refreshToken: string }) {
-    const payload = verifyToken(params.refreshToken);
+    const payload = verifyRefreshToken(params.refreshToken);
     const savedRefreshToken = await this.refreshTokenRepository.findByUuid({
       uuid: payload.jti ?? '',
     });

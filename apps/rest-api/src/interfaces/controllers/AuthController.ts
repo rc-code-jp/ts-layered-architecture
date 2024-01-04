@@ -78,7 +78,7 @@ export class AuthController {
     };
   }
 
-  async getMe(params: {
+  async getAuthMe(params: {
     userId: number;
   }) {
     const usecase = new GetAuthMe(this.userRepository);
@@ -87,7 +87,7 @@ export class AuthController {
     });
 
     return {
-      item: res,
+      item: res.user,
     };
   }
 }
