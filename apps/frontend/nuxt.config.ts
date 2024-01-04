@@ -2,6 +2,7 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  ssr: false, // SPA mode
   typescript: {
     typeCheck: true,
   },
@@ -32,28 +33,6 @@ export default defineNuxtConfig({
     vue: {
       template: {
         transformAssetUrls,
-      },
-    },
-  },
-  auth: {
-    baseURL: `${process.env.API_URL}/`,
-    provider: {
-      type: 'refresh',
-      endpoints: {
-        signUp: { path: '/auth/sigup', method: 'post' },
-        signIn: { path: '/auth/signin', method: 'post' },
-        getSession: { path: '/auth/me' },
-        refresh: { path: '/auth/refresh-token', method: 'post' },
-      },
-      pages: {
-        login: '/auth/signin',
-      },
-      token: {
-        signInResponseTokenPointer: '/accessToken',
-        maxAgeInSeconds: 60 * 5, // 5 min
-      },
-      refreshToken: {
-        signInResponseRefreshTokenPointer: '/refreshToken',
       },
     },
   },
