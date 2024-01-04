@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { setAuthToken } from '~/_auth';
 
 const router = useRouter()
 const runtimeConfig = useRuntimeConfig();
+
+const { setToken } = useAuthToken()
 
 const form = ref({
   email: 'admin@example.com',
@@ -23,7 +24,7 @@ const  submit = async () => {
       },
     })
 
-    setAuthToken({
+    setToken({
       accessToken: res.accessToken,
       refreshToken: res.refreshToken,
     })

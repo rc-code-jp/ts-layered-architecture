@@ -2,7 +2,6 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false, // SPA mode
   typescript: {
     typeCheck: true,
   },
@@ -26,8 +25,6 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }));
       });
     },
-    // auth
-    '@sidebase/nuxt-auth',
   ],
   vite: {
     vue: {

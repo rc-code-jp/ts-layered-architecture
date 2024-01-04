@@ -1,5 +1,3 @@
-import { clearAuthToken, getAuthToken, setAuthToken } from '~/_auth';
-
 type Options = {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   headers?: Record<string, string>;
@@ -8,11 +6,12 @@ type Options = {
 
 export default defineNuxtPlugin((nuxtApp) => {
   const baseUrl = nuxtApp.$config.public.API_URL ?? '';
+  const { setToken, getToken, clearToken } = useAuthToken();
 
   return {
     provide: {
       customFetch: <T>(path: string, options: Options = {}) => {
-        const authToken = getAuthToken();
+        const authToken = getToken();
 
         const defaultHeaders = {
           'Content-Type': 'application/json',
@@ -44,7 +43,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                     refreshToken: authToken.refreshToken,
                   },
                 });
-                setAuthToken({
+                setToken({
                   accessToken: tokenRes.accessToken,
                   refreshToken: tokenRes.refreshToken,
                 });
@@ -53,7 +52,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                   Authorization: `Bearer ${tokenRes.accessToken}`,
                 };
               } catch (_e) {
-                clearAuthToken();
+                clearToken();
               }
             }
           },

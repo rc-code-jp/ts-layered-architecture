@@ -2,10 +2,6 @@
 import draggable from 'vuedraggable'
 import type { TaskGroup, Task } from '~/types';
 
-definePageMeta({
-  middleware: []
-})
-
 const {$customFetch} = useNuxtApp()
 
 const router = useRouter()
