@@ -13,6 +13,7 @@ export class SignIn {
 
   async execute(params: { email: string; password: string }) {
     const existsUser = await this.repository.findByEmail({ email: params.email });
+    console.dir(existsUser);
     if (!existsUser) {
       throw new Error('Email not found');
     }

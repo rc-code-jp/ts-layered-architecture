@@ -16,6 +16,7 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
       },
     });
     return new RefreshTokenModel({
+      id: item.id,
       uuid: item.uuid,
       hashedToken: item.hashedToken,
       userId: item.userId,
@@ -30,6 +31,7 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
     if (!item) return null;
 
     const model = new RefreshTokenModel({
+      id: item.id,
       uuid: item.uuid,
       hashedToken: item.hashedToken,
       userId: item.userId,
@@ -48,6 +50,7 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
     if (!item) return null;
 
     const model = new RefreshTokenModel({
+      id: item.id,
       uuid: item.uuid,
       hashedToken: item.hashedToken,
       userId: item.userId,
