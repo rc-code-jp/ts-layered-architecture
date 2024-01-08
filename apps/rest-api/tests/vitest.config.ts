@@ -6,5 +6,10 @@ export default defineConfig({
   test: {
     globalSetup: ['tests/globalSetup.ts'],
     include: ['tests/**/*.{test,spec}.ts'],
+    coverage: {
+      reporter: ['html'],
+      reportsDirectory: 'tests/coverage',
+      include: ['src/application/usecases/**/*.{ts,tsx}'],
+    },
   },
 });
