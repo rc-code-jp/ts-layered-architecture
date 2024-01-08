@@ -12,14 +12,14 @@ datasource db {
 
 // ユーザー
 model User {
-  id            Int            @id @default(autoincrement())
-  email         String         @unique
-  name          String
-  password      String
-  taskGroups    TaskGroup[]
-  refreshTokens RefreshToken[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @default(now()) @updatedAt
+  id             Int            @id @default(autoincrement())
+  email          String         @unique
+  name           String
+  hashedPassword String
+  taskGroups     TaskGroup[]
+  refreshTokens  RefreshToken[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @default(now()) @updatedAt
 }
 
 // トークン

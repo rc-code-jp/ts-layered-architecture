@@ -1,7 +1,6 @@
 import { IUserRepository } from '@/application/repositories/IUserRepository';
 import { UserModel } from '@/domain/models/UserModel';
 import { db } from '@/infrastructure/store/database/db';
-import { hashPassword } from '@/utils/auth/password';
 
 export class UserRepository implements IUserRepository {
   async findByEmail(params: { email: string }): Promise<UserModel | null> {
@@ -14,7 +13,7 @@ export class UserRepository implements IUserRepository {
       id: item.id,
       email: item.email,
       name: item.name,
-      password: item.password,
+      hashedPassword: item.hashedPassword,
     });
     return model;
   }
@@ -29,29 +28,28 @@ export class UserRepository implements IUserRepository {
       id: item.id,
       email: item.email,
       name: item.name,
-      password: item.password,
+      hashedPassword: item.hashedPassword,
     });
     return model;
   }
 
   async create(params: {
     email: string;
-    password: string;
+    hashedPassword: string;
     name: string;
   }): Promise<UserModel> {
-    const hashedPassword = await hashPassword(params.password);
     const item = await db.user.create({
       data: {
         email: params.email,
         name: params.name,
-        password: hashedPassword,
+        hashedPassword: params.hashedPassword,
       },
     });
     return new UserModel({
       id: item.id,
       email: item.email,
       name: item.name,
-      password: item.password,
+      hashedPassword: item.hashedPassword,
     });
   }
 }

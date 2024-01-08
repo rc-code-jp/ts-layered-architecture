@@ -1,6 +1,7 @@
 import { IRefreshTokenRepository } from '@/application/repositories/IRefreshTokenRepository';
 import { IUserRepository } from '@/application/repositories/IUserRepository';
 import { SignIn } from '@/application/usecases/auth/SignIn';
+import * as bcrypt from 'bcrypt';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('usecase', () => {
@@ -8,6 +9,7 @@ describe('usecase', () => {
   let refreshTokenRepositoryMock: IRefreshTokenRepository;
 
   beforeEach(() => {
+    const hashedPassword = bcrypt.hashSync('password', 12);
     userRepositoryMock = {
       findById: vi.fn(),
       findByEmail: vi.fn().mockReturnValue(
@@ -15,7 +17,7 @@ describe('usecase', () => {
           id: 1,
           name: 'test',
           email: 'test@example.com',
-          sss: '',
+          hashedPassword: hashedPassword,
         }),
       ),
       create: vi.fn(),
@@ -36,13 +38,17 @@ describe('usecase', () => {
 
   describe('SignIn', () => {
     it('should return access token and refresh token', async () => {
+      console.dir(process.env);
       const signIn = new SignIn(userRepositoryMock, refreshTokenRepositoryMock);
       const result = await signIn.execute({
         email: 'example@examp.com',
-        password: '123456',
+        password: 'password',
       });
 
-      expect(result).toEqual(null);
+      expect(result).toEqual({
+        accessToken: expect.any(String),
+        refreshToken: expect.any(String),
+      });
     });
   });
 });

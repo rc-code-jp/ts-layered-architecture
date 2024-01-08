@@ -13,12 +13,11 @@ export class SignIn {
 
   async execute(params: { email: string; password: string }) {
     const existsUser = await this.repository.findByEmail({ email: params.email });
-    console.dir(existsUser);
     if (!existsUser) {
       throw new Error('Email not found');
     }
 
-    const validPassword = await comparePassword(params.password, existsUser.password);
+    const validPassword = await comparePassword(params.password, existsUser.hashedPassword);
     if (!validPassword) {
       throw new Error('Password is invalid');
     }

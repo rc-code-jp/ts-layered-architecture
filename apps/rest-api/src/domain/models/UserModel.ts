@@ -2,18 +2,18 @@ import { BaseModel } from './BaseModel';
 
 export class UserModel extends BaseModel {
   readonly email: string;
-  readonly password: string;
+  readonly hashedPassword: string;
   readonly name: string;
 
   constructor(props: {
     id: number;
     email: string;
-    password: string;
+    hashedPassword: string;
     name: string;
   }) {
     super({ id: props.id });
     this.email = props.email;
-    this.password = props.password;
+    this.hashedPassword = props.hashedPassword;
     this.name = props.name;
   }
 }

@@ -12,7 +12,7 @@ async function main() {
     create: {
       email: 'admin@example.com',
       name: 'Admin',
-      password: ps,
+      hashedPassword: ps,
       taskGroups: {
         create: [
           {

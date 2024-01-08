@@ -1,6 +1,7 @@
 import { IRefreshTokenRepository } from '@/application/repositories/IRefreshTokenRepository';
 import { IUserRepository } from '@/application/repositories/IUserRepository';
 import { generateTokens } from '@/utils/auth/jtw';
+import { hashPassword } from '@/utils/auth/password';
 import { hashToken } from '@/utils/auth/token';
 import { generateUUID } from '@/utils/auth/uuid';
 
@@ -17,10 +18,12 @@ export class CreateUser {
       throw new Error('Email already exists');
     }
 
+    const hashedPassword = await hashPassword(params.password);
+
     const user = await this.repository.create({
-      email: params.email,
-      password: params.password,
       name: params.name,
+      email: params.email,
+      hashedPassword: hashedPassword,
     });
 
     const uuid = await generateUUID();
