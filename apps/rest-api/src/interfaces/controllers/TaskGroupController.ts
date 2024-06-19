@@ -5,7 +5,7 @@ import { GetTaskGroup } from '@/application/usecases/taskGroup/GetTaskGroup';
 import { GetTaskGroupList } from '@/application/usecases/taskGroup/GetTaskGroupList';
 import { UpdateTaskGroup } from '@/application/usecases/taskGroup/UpdateTaskGroup';
 import { UpdateTaskGroupSort } from '@/application/usecases/taskGroup/UpdateTaskGroupSort';
-import { TaskGroupRepository } from '../database/TaskGroupRepository';
+import { TaskGroupRepository } from '../../infrastructure/repository/TaskGroupRepository';
 
 export class TaskGroupController {
   private taskGroupRepository: ITaskGroupRepository;

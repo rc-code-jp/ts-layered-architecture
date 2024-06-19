@@ -1,4 +1,4 @@
-import { app } from '@/infrastructure/http/app';
+import { app } from '@/interfaces/http/app';
 import { serve } from '@hono/node-server';
 
 const SERVER_PORT = 3000;

@@ -4,7 +4,7 @@ import { DeleteDoneTasks } from '@/application/usecases/task/DeleteDoneTasks';
 import { DeleteTask } from '@/application/usecases/task/DeleteTask';
 import { UpdateTask } from '@/application/usecases/task/UpdateTask';
 import { UpdateTaskSort } from '@/application/usecases/task/UpdateTaskSort';
-import { TaskRepository } from '../database/TaskRepository';
+import { TaskRepository } from '../../infrastructure/repository/TaskRepository';
 
 export class TaskController {
   private taskRepository: ITaskRepository;

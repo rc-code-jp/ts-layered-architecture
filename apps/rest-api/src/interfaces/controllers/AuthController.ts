@@ -5,8 +5,8 @@ import { GetAuthMe } from '@/application/usecases/auth/GetAuthMe';
 import { RefreshToken } from '@/application/usecases/auth/RefreshToken';
 import { RevokeTokens } from '@/application/usecases/auth/RevokeTokens';
 import { SignIn } from '@/application/usecases/auth/SignIn';
-import { RefreshTokenRepository } from '../database/RefreshTokenRepository';
-import { UserRepository } from '../database/UserRepository';
+import { RefreshTokenRepository } from '../../infrastructure/repository/RefreshTokenRepository';
+import { UserRepository } from '../../infrastructure/repository/UserRepository';
 
 export class AuthController {
   private userRepository: IUserRepository;
